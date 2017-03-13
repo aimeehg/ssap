@@ -119,8 +119,30 @@ $stmt = $this->db->query("select max(id) from periodo");
       $stmt2->execute();
       $maxsec=$stmt2->fetch();
       $maxsec=$maxsec[0]+1;
+        $prof=$userRow['id'];
+      $stmtv2 = $this->db->query("select nrc from curso where id_profesor=$prof");
+      $stmtv2->execute();
+    //  $nrc_query=$stmtv2->fetch_array();
 
+      // Create connection
+$conn = new mysqli("localhost", "root", "","seguimiento_academico");
+// Check connection
+if ($conn->connect_error) {
+    die("Connection failed: " . $conn->connect_error);
+} 
+ $sql = "SELECT nrc FROM curso WHERE id_profesor= $prof";
+$result = $conn->query($sql);
 
+ 
+while ($row=$result->fetch_array()) {
+      echo $row[0]."<br>";
+      $stmtv21 = $this->db->query("select dias,hora from horarios where nrc_curso =        $row[0] and dias='lunes' and hora='$hora'");
+      $stmtv21->execute();
+  $count = $stmtv21->rowCount();
+
+}
+
+    if($count==0){
     $per=explode("-",$periodo);
       $stmt7 = $this->db->prepare("INSERT INTO periodo(ciclo,year) VALUES(:ciclo,:year)");
       $stmt7->bindParam(":ciclo",$per[0]);
@@ -263,7 +285,10 @@ $stmt = $this->db->query("select max(id) from periodo");
           echo "No se puede ejecutar !";
         }
         
-      
+      }else
+      echo "1"; 
+ 
+
  
 
 
@@ -273,6 +298,7 @@ $stmt = $this->db->query("select max(id) from periodo");
            echo $e->getMessage();
        }
 
+    
    
     }
  
