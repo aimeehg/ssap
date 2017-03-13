@@ -135,8 +135,8 @@ $result = $conn->query($sql);
 
  
 while ($row=$result->fetch_array()) {
-      echo $row[0]."<br>";
-      $stmtv21 = $this->db->query("select dias,hora from horarios where nrc_curso =        $row[0] and dias='lunes' and hora='$hora'");
+      //echo $row[0]."<br>";
+      $stmtv21 = $this->db->query("select dias,hora from horarios where nrc_curso = $row[0] and dias='lunes' and hora='$hora'");
       $stmtv21->execute();
   $count = $stmtv21->rowCount();
 
@@ -150,7 +150,7 @@ while ($row=$result->fetch_array()) {
       
         if($stmt7->execute())
         {
-          echo "registrado";
+          //echo "registrado";
         }
         else
         {
@@ -164,7 +164,7 @@ while ($row=$result->fetch_array()) {
       
         if($stmt8->execute())
         {
-          echo "registrado";
+          //echo "registrado";
         }
         else
         {
@@ -180,7 +180,7 @@ while ($row=$result->fetch_array()) {
       $stmt3->bindParam(":periodo",$maxper);
         if($stmt3->execute())
         {
-          echo "registrado";
+        //  echo "registrado";
         }
         else
         {
@@ -224,7 +224,7 @@ while ($row=$result->fetch_array()) {
 
 
 
-    echo $horas;
+    //echo $horas;
 
 
 
@@ -241,7 +241,7 @@ while ($row=$result->fetch_array()) {
       $stmt4->bindParam(":fecha_final",$fecha2);
         if($stmt4->execute())
         {
-          echo "registrado";
+         // echo "registrado";
         }
         else
         {
@@ -260,7 +260,7 @@ while ($row=$result->fetch_array()) {
       $stmt5->bindParam(":fecha_final",$fecha2);
         if($stmt5->execute())
         {
-          echo "registrado";
+          //echo "registrado";
         }
         else
         {
@@ -295,7 +295,8 @@ while ($row=$result->fetch_array()) {
 
       }catch(PDOException $e)
        {
-           echo $e->getMessage();
+           //echo $e->getMessage();
+           echo "error";
        }
 
     

@@ -33,21 +33,22 @@
         data : data,
 				success :  function(data)
 						   {						
-								if(data==-1){
+								if(data=="error"){
                                    
-								  //  console.log("ya registrado");
-                                    alert("Un profesor ya se registro con este id");
+								    console.log("aleeeert1");
+                                    alert("Hay un error en el horario del curso");
 
                     				
 								}
 								else if(data=="registrado")
 								{
-                                    //console.log("registrado");
-                                    alert("Profesor registrado exitosamente");
+                                    console.log("aleeeert");
+                                    alert("Curso agregado correctamente");
                  
     
 								}
                                 else{
+                                  alert("Hay un error.");
                                     console.log(data);
                                 }
                 
