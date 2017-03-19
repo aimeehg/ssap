@@ -14,7 +14,7 @@ $userRow=$stmt->fetch(PDO::FETCH_ASSOC);
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title>SSAP | Página principal del alumno</title>
+  <title>SSAP | Ver profesores</title>
   <!-- Tell the browser to be responsive to screen width -->
   <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
   <!-- Bootstrap 3.3.6 -->
@@ -28,7 +28,7 @@ $userRow=$stmt->fetch(PDO::FETCH_ASSOC);
   <!-- AdminLTE Skins. Choose a skin from the css/skins
        folder instead of downloading all of them to reduce the load. -->
   <link rel="stylesheet" href="../dist/css/skins/_all-skins.min.css">
-
+  <style> li { cursor: pointer; } </style>
   <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
   <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
   <!--[if lt IE 9]>
@@ -429,7 +429,7 @@ $userRow=$stmt->fetch(PDO::FETCH_ASSOC);
     <!-- Content Header (Page header) -->
     <section class="content-header">
       <h1>
-        Página principal de Alumno
+        Profesores
        <!-- <small>it all starts here</small>-->
       </h1>
 
@@ -448,7 +448,7 @@ $userRow=$stmt->fetch(PDO::FETCH_ASSOC);
       <!-- Default box -->
       <div class="box">
         <div class="box-header with-border">
-          <h3 class="box-title">Bienvenido</h3>
+          <h3 class="box-title">Lista de Profesores</h3>
 
           <div class="box-tools pull-right">
             <button type="button" class="btn btn-box-tool" data-widget="collapse" data-toggle="tooltip" title="Collapse">
@@ -457,16 +457,47 @@ $userRow=$stmt->fetch(PDO::FETCH_ASSOC);
               <i class="fa fa-times"></i></button>
           </div>
         </div>
-        <div class="box-body">
-          Aquí podrá realizar las funciones del alumno...
-        </div>
-        <!-- /.box-body -->
-        <div class="box-footer">
-          
-        </div>
-        <!-- /.box-footer-->
+       <div class="box-body">
+              <ul id="proflista">
+               
+              </ul>
+              <!-- Modal -->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">Información</h4>
       </div>
-      <!-- /.box -->
+      <div class="modal-body">
+        E-mail:
+        <p id="email"></p>
+        Número de cubículo:
+        <p id="cub"></p>
+        Extensión telefónica:
+        <p id="tel"></p>
+        Asesorias:
+        <table id="asesorias" class="table">
+    <thead>
+      <tr>
+        <th>Día</th>
+        <th>Hora</th>
+      </tr>
+    </thead>
+    <tbody id="tbody">
+     
+    </tbody>
+  </table>
+
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+        
+      </div>
+    </div>
+  </div>
+</div>
+            </div>
 
     </section>
     <!-- /.content -->
@@ -690,5 +721,6 @@ $userRow=$stmt->fetch(PDO::FETCH_ASSOC);
 <script src="../dist/js/app.min.js"></script>
 <!-- AdminLTE for demo purposes -->
 <script src="../dist/js/demo.js"></script>
+<script src="../scripts/ver_profesores.js"></script>
 </body>
 </html>

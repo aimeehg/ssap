@@ -5,7 +5,56 @@ class profesor{
     function __construct($DB_con){
       $this->db = $DB_con;
     }
+     public function getAsesorias($id){
+                try
+  { 
+  
+   $stmt = $this->db->prepare("SELECT asesorias.id_profesor, asesorias.hora, asesorias.dia FROM asesorias, profesor WHERE asesorias.id_profesor = profesor.id and asesorias.id_profesor =:id");
+   $stmt->execute(array(":id"=>$id));
+   
+  // $count = $stmt->rowCount();
+       $jsonData = array();
+       while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
 
+            $jsonData[] = $row;
+            // echo gettype($row), "\n";
+            
+   
+       }
+       //print_r(json_encode($jsonData, JSON_PRETTY_PRINT));
+       echo json_encode($jsonData);
+    
+  }
+  catch(PDOException $e){
+   echo $e->getMessage();
+  }
+
+    }
+    public function getProfesores(){
+                try
+  { 
+  
+  $stmt = $this->db->prepare("SELECT id,nombre,materno,paterno FROM `profesor` WHERE 1");
+   $stmt->execute();
+
+       $jsonData = array();
+       while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+
+            $jsonData[] = $row;
+            // echo gettype($row), "\n";
+            
+   
+       }
+       //print_r(json_encode($jsonData, JSON_PRETTY_PRINT));
+       echo json_encode($jsonData);
+    
+    
+  }
+  catch(PDOException $e){
+   echo $e->getMessage();
+  }
+
+    }
     public function getDatos($id){
                 try
   { 
