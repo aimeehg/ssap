@@ -8,33 +8,22 @@ $user_id = $_SESSION['user_session'];
 $stmt = $DB_con->prepare("SELECT * FROM profesor WHERE id=:user_id");
 $stmt->execute(array(":user_id"=>$user_id));
 $userRow=$stmt->fetch(PDO::FETCH_ASSOC);
+$nrc=$_GET['a'];
+//echo "<h1>".$nrc."</h1>";
+
+$stmt1 = $DB_con->prepare("SELECT * FROM criterios_evaluacion WHERE nrc_curso=:nrc_curso");
+$stmt1->execute(array(":nrc_curso"=>$nrc));
+	# code...
 ?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
-<?php
 
-$servername = "localhost";
-$username = "root";
-$password = "";
-$dbname = "seguimiento_academico";
 
-// Create connection
-$conn = new mysqli($servername, $username, $password, $dbname);
-// Check connection
-if ($conn->connect_error) {
-    die("Connection failed: " . $conn->connect_error);
-} 
-
-$sql = "SELECT * FROM curso WHERE id_profesor= $user_id";
-$result = $conn->query($sql);
-
-?>
 <!DOCTYPE html>
 <html>
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title>SSAP | Administrar cursos</title>
+  <title>SSAP | Criterios</title>
   <!-- Tell the browser to be responsive to screen width -->
   <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
   <!-- Bootstrap 3.3.6 -->
@@ -469,11 +458,8 @@ $result = $conn->query($sql);
         <div class="col-xs-12">
           <div class="box">
             <div class="box-header">
-              <h3 class="box-title">Cursos Inscritos</h3>
+              <h3 class="box-title">Criterio de evaluación</h3>
               <br>
-                <a href="agregar_curso.php">
-                 <i class="glyphicon glyphicon-plus"></i> <span>Añadir Curso</span>
-                    </a>
               <div class="box-tools">
                 <div class="input-group input-group-sm" style="width: 150px;">
                   <input type="text" name="table_search" class="form-control pull-right" placeholder="Search">
@@ -488,78 +474,38 @@ $result = $conn->query($sql);
             <div class="box-body table-responsive no-padding">
               <table class="table table-hover">
                 <tr>
-                  <th>NRC</th>
-                  <th>Código</th>
-                  <th>Nombre</th>
-                  <th>Sección</th>
-                  <th>Periodo</th>
-                  <th>Editar</th>
+                  <th>Descripción</th>
+                  <th>Porcentaje</th>
+                  <th>Definir criterio</th>
                   <th>Eliminar</th>
-                  <th># de Alumnos</th>
-                  <th>Acciones sobre alumnos</th>
-                  <th>Criterios de evaluación</th>
-                  <th></th>
                 </tr>
+                	<?php while ($cri=$stmt1->fetch(PDO::FETCH_ASSOC)) {?>
                <tr>
-<?php
-    while($row = $result->fetch_array()) {
-?>
-	<td> <?php echo $row[0] ?> 
-</td>
-	<td><?php  
-	$sql1 = "SELECT * FROM materia WHERE id= $row[1]";
-$result1 = $conn->query($sql1);
-$row1 = $result1->fetch_array();
-	echo $row1[1]; 
-	$id=$row1[1];?> 
-</td>
-	<td> <?php  
-	$sql1 = "SELECT * FROM materia WHERE id= $row[1]";
-$result1 = $conn->query($sql1);
-$row1 = $result1->fetch_array();
-	echo $row1[2]; ?> 
-	</td>
-
-	<td>
-		 <?php  
-	$sql2 = "SELECT * FROM seccion WHERE id= $row[2]";
-$result2 = $conn->query($sql2);
-$row2 = $result2->fetch_array();
-	echo $row2[1]; ?>  
-	</td>
-	<td>
-				 <?php  
-	$sql3 = "SELECT * FROM periodo WHERE id= $row[4]";
-$result3 = $conn->query($sql3);
-$row3 = $result3->fetch_array();
-	echo $row3[1].$row3[2]; ?>
-	</td>
-
-	<td><a href="editar_curso.php?a=<?php echo $row[0] ?>" class="glyphicon glyphicon-edit"></a></td>
-    <td><a href="../php/eliminar_curso.php?a=<?php echo $row[0] ?>" class="glyphicon glyphicon-remove"></a></td>
-    <td><?php  
-	$sql1 = "SELECT COUNT(*) FROM inscripcion where id_curso=$row[0]";
-$result1 = $conn->query($sql1);
-$row1 = $result1->fetch_array();
-	echo $row1[0]; 
-?> </td>
 <td>
-	<a href="insertar_alumnos.php?a=<?php echo $row[0] ?>">Insertar alumnos</a>
-	<br>
-	<a href="editar_alumnos.php?a=<?php echo $row[0] ?>">Editar alumnos</a>
-	<br>
-	<a href="eliminar_alumnos.php?a=<?php echo $row[0] ?>">Eliminar alumnos</a>
-</td>
-<td><a href="criterios.php?a=<?php echo $row[0] ?>">Criterios</a></td>
-<td><a href="calificacion_final.php?a=<?php echo $row[0] ?>">Calificacion final</a></td>
-</tr>
+ 		<?php      echo $cri['descripcion']; ?>
+         
+ 	</td>
 
-<?php
-}
-?>
+ <td>
+ 		<?php echo $cri['porcentaje']; ?>
+ 	</td>
+
+<td>
+<a href="../php/anadir_criterio.php?id=<?php echo $cri['id'] ?>">Anadir</a> 		
+ 	</td>
+     	<td>
+ 		 <a href="../php/eliminar_criterio.php?nrc=<?php echo $cri['id'] ?>">eliminar</a>
+ 	</td>
+</tr>
+<?php } ?>
+
               </table>
             </div>
             <!-- /.box-body -->
+             <a href="anadir_porcentaje.php?nrc=<?php echo $nrc ?>">Anadir criterio</a>
+ <br>
+ <a href="subir_calificacion_porcentaje.php?nrc=<?php echo $nrc ?>">Subir calificaciones criterios</a>
+ <br>
            
           </div>
           <!-- /.box -->

@@ -463,7 +463,7 @@ $userRow=$stmt->fetch(PDO::FETCH_ASSOC);
               </ul>
               <!-- Modal -->
 <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-  <div class="modal-dialog" role="document">
+  <div class="modal-dialog modal-lg" role="document">
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
@@ -476,16 +476,20 @@ $userRow=$stmt->fetch(PDO::FETCH_ASSOC);
         <p id="cub"></p>
         Extensión telefónica:
         <p id="tel"></p>
-        Asesorias:
+        Horario:
         <table id="asesorias" class="table">
     <thead>
       <tr>
-        <th>Día</th>
         <th>Hora</th>
+        <th id="Lunes">Lunes</th>
+        <th id="Martes">Martes</th>
+        <th id="Miercoles">Miércoles</th>
+        <th id="Jueves">Jueves</th>
+        <th id="Viernes">Viernes</th>
       </tr>
     </thead>
-    <tbody id="tbody">
-     
+    <tbody id="tbodyid">
+
     </tbody>
   </table>
 

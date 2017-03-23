@@ -8,27 +8,19 @@ $user_id = $_SESSION['user_session'];
 $stmt = $DB_con->prepare("SELECT * FROM profesor WHERE id=:user_id");
 $stmt->execute(array(":user_id"=>$user_id));
 $userRow=$stmt->fetch(PDO::FETCH_ASSOC);
+$nrc=$_GET['nrc'];
+
+
+$stmt1 = $DB_con->prepare("SELECT * FROM inscripcion WHERE id_curso=:nrc order by id_alumno");
+$stmt1->execute(array("nrc"=>$nrc));
+
+
+$stmt4 = $DB_con->prepare("SELECT * FROM criterios_evaluacion WHERE nrc_curso=:nrc");
+$stmt4->execute(array("nrc"=>$nrc));
 ?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
-<?php
 
-$servername = "localhost";
-$username = "root";
-$password = "";
-$dbname = "seguimiento_academico";
 
-// Create connection
-$conn = new mysqli($servername, $username, $password, $dbname);
-// Check connection
-if ($conn->connect_error) {
-    die("Connection failed: " . $conn->connect_error);
-} 
-
-$sql = "SELECT * FROM curso WHERE id_profesor= $user_id";
-$result = $conn->query($sql);
-
-?>
 <!DOCTYPE html>
 <html>
 <head>
@@ -469,11 +461,8 @@ $result = $conn->query($sql);
         <div class="col-xs-12">
           <div class="box">
             <div class="box-header">
-              <h3 class="box-title">Cursos Inscritos</h3>
+              <h3 class="box-title">Criterio de evaluación</h3>
               <br>
-                <a href="agregar_curso.php">
-                 <i class="glyphicon glyphicon-plus"></i> <span>Añadir Curso</span>
-                    </a>
               <div class="box-tools">
                 <div class="input-group input-group-sm" style="width: 150px;">
                   <input type="text" name="table_search" class="form-control pull-right" placeholder="Search">
@@ -486,78 +475,87 @@ $result = $conn->query($sql);
             </div>
             <!-- /.box-header -->
             <div class="box-body table-responsive no-padding">
+            <form action="../php/calificacion_porcentaje.php" method="POST">
               <table class="table table-hover">
                 <tr>
-                  <th>NRC</th>
-                  <th>Código</th>
+                  <th>Matrícula</th>
                   <th>Nombre</th>
-                  <th>Sección</th>
-                  <th>Periodo</th>
-                  <th>Editar</th>
-                  <th>Eliminar</th>
-                  <th># de Alumnos</th>
-                  <th>Acciones sobre alumnos</th>
-                  <th>Criterios de evaluación</th>
-                  <th></th>
+                  <th>Apellido Paterno</th>
+                  <th>Apellido Materno</th>
+                  <?php
+while ($userRow4=$stmt4->fetch(PDO::FETCH_ASSOC)) {
+
+$stmt5 = $DB_con->prepare("SELECT * FROM evaluacion where id_criterios=:id");
+$stmt5->execute(array("id"=>$userRow4['id']));
+$cont=$stmt5->rowCount();
+
+$stmt6 = $DB_con->prepare("SELECT * FROM inscripcion where id_curso=:id");
+$stmt6->execute(array("id"=>$nrc));
+$con6=$stmt6->rowCount();
+
+$conf=$cont/$con6;
+if ($conf>0) {
+	 echo "<th colspan=$conf>";
+	 echo $userRow4['descripcion'];
+echo "</th>";
+}
+
+	 }?>	
                 </tr>
-               <tr>
-<?php
-    while($row = $result->fetch_array()) {
+                <?php 
+while ($userRow1=$stmt1->fetch(PDO::FETCH_ASSOC)) {
+
 ?>
-	<td> <?php echo $row[0] ?> 
-</td>
-	<td><?php  
-	$sql1 = "SELECT * FROM materia WHERE id= $row[1]";
-$result1 = $conn->query($sql1);
-$row1 = $result1->fetch_array();
-	echo $row1[1]; 
-	$id=$row1[1];?> 
-</td>
-	<td> <?php  
-	$sql1 = "SELECT * FROM materia WHERE id= $row[1]";
-$result1 = $conn->query($sql1);
-$row1 = $result1->fetch_array();
-	echo $row1[2]; ?> 
-	</td>
+                	
+<tr>
+<td> <?php 
+	# code...
+echo $userRow1['id_alumno'];
+	
+$alu=$userRow1['id_alumno'];
+$stmt2 = $DB_con->prepare("SELECT * FROM alumno WHERE matricula=:mat ");
+$stmt2->execute(array("mat"=>$alu));
+	?></td>
 
-	<td>
-		 <?php  
-	$sql2 = "SELECT * FROM seccion WHERE id= $row[2]";
-$result2 = $conn->query($sql2);
-$row2 = $result2->fetch_array();
-	echo $row2[1]; ?>  
-	</td>
-	<td>
-				 <?php  
-	$sql3 = "SELECT * FROM periodo WHERE id= $row[4]";
-$result3 = $conn->query($sql3);
-$row3 = $result3->fetch_array();
-	echo $row3[1].$row3[2]; ?>
-	</td>
-
-	<td><a href="editar_curso.php?a=<?php echo $row[0] ?>" class="glyphicon glyphicon-edit"></a></td>
-    <td><a href="../php/eliminar_curso.php?a=<?php echo $row[0] ?>" class="glyphicon glyphicon-remove"></a></td>
-    <td><?php  
-	$sql1 = "SELECT COUNT(*) FROM inscripcion where id_curso=$row[0]";
-$result1 = $conn->query($sql1);
-$row1 = $result1->fetch_array();
-	echo $row1[0]; 
-?> </td>
 <td>
-	<a href="insertar_alumnos.php?a=<?php echo $row[0] ?>">Insertar alumnos</a>
-	<br>
-	<a href="editar_alumnos.php?a=<?php echo $row[0] ?>">Editar alumnos</a>
-	<br>
-	<a href="eliminar_alumnos.php?a=<?php echo $row[0] ?>">Eliminar alumnos</a>
+<?php
+while ($userRow2=$stmt2->fetch(PDO::FETCH_ASSOC)) {
+	# code...
+echo $userRow2['nombre'];	
+
+?>
 </td>
-<td><a href="criterios.php?a=<?php echo $row[0] ?>">Criterios</a></td>
-<td><a href="calificacion_final.php?a=<?php echo $row[0] ?>">Calificacion final</a></td>
+
+<td>
+<?php
+echo $userRow2['paterno'];
+
+?>
+
+<td>
+	<?php
+echo $userRow2['materno'];
+}
+	?>
+</td>
+<?php
+$stmt3 = $DB_con->prepare("SELECT * FROM evaluacion WHERE id_alumno=:mat order by id_criterios");
+$stmt3->execute(array("mat"=>$alu));
+while ($userRow3=$stmt3->fetch(PDO::FETCH_ASSOC)) {
+	$cont=$stmt3->rowCount();
+	
+echo "<td>";
+echo "<input type='text' value=".$userRow3['calif']." name=".$userRow3['id'].">";
+echo "</td>";
+}}
+
+?>
 </tr>
 
-<?php
-}
-?>
               </table>
+              <br>
+<input type="submit" value="Subir">
+</form>
             </div>
             <!-- /.box-body -->
            
