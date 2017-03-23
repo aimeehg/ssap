@@ -59,7 +59,13 @@ function clickHandler(object) {
                 data:{id:object.id},
 				success :  function(data){						
 					
-        
+         var clasesp = {
+                                    dias: [],
+                                    horas:[],
+                                    clases:[]
+                                };
+                                
+                               
                        $("#tbodyid").html("");
 //    tbody.html("");
 
@@ -116,7 +122,18 @@ function clickHandler(object) {
                                 default:
                                     break;
                             }
+                              clasesp.dias.push({ 
+                                 "dia" : dia,
+                                }); 
+                                clasesp.horas.push({ 
+                                 "hora" : hora,
+                                }); 
+                                clasesp.clases.push({ 
+                                 "clase" : data[index].nombre,
+                                 }); 
+                            //actividades = { "dia":dia, "hora":hora, "clase": data[index].nombre};
                             //console.log(hora);
+                        /*
                             switch (hora) {
                                 case "7":
                                    
@@ -169,10 +186,11 @@ function clickHandler(object) {
                                 default:
                                     break;
                             }
-                            
+                            */
             
                        
                                         });
+                                       // console.log(clasesp);
 						   }
                            
 				});
@@ -182,72 +200,73 @@ function clickHandler(object) {
                             //var newRowContent = '<tr><td>'+data[index].dia+'</td><td>'+data[index].hora+'</td></tr>';
                             var x = data[index].hora;
                             //console.log(x.charAt(0)+x.charAt(1));
-                            var hora = parseInt(x.charAt(0)+x.charAt(1));
+                            //var hora = parseInt(x.charAt(0)+x.charAt(1));
                             //console.log(hora);
-                            switch (hora) {
-                                case 7:
+                            var hora1 = x.charAt(0)+x.charAt(1);
+                            switch (hora1) {
+                                case "7":
                                     var dia = data[index].dia;
                                     //console.log(dia);
-                                document.getElementById(hora+dia).innerHTML = data[index].tipo;
+                                document.getElementById(hora1+dia).innerHTML = data[index].tipo;
                                     
                                    // var row = document.getElementById("7");
                                     //var x = row.insertCell(dia);
                                     //x.innerHTML = data[index].tipo;
                                     break;
-                                case 8:
+                                case "8":
                                     var dia = data[index].dia;
                                     //console.log(dia);
-                                document.getElementById(hora+dia).innerHTML = data[index].tipo;
+                                document.getElementById(hora1+dia).innerHTML = data[index].tipo;
                                     break;
-                                case 9:
+                                case "9":
                                    var dia = data[index].dia;
                                     //console.log(dia);
-                                document.getElementById(hora+dia).innerHTML = data[index].tipo;
+                                document.getElementById(hora1+dia).innerHTML = data[index].tipo;
                                     break;
-                                case 10:
+                                case "10":
                                    var dia = data[index].dia;
                                     //console.log(dia);
-                                document.getElementById(hora+dia).innerHTML = data[index].tipo;
+                                document.getElementById(hora1+dia).innerHTML = data[index].tipo;
                                     break;
-                                case 11:
+                                case "11":
                                    var dia = data[index].dia;
                                     //console.log(dia);
-                                document.getElementById(hora+dia).innerHTML = data[index].tipo;
+                                document.getElementById(hora1+dia).innerHTML = data[index].tipo;
                                     break;
-                                case 12:
+                                case "12":
                                    var dia = data[index].dia;
                                     //console.log(dia);
-                                document.getElementById(hora+dia).innerHTML = data[index].tipo;
+                                document.getElementById(hora1+dia).innerHTML = data[index].tipo;
                                     break;
-                                case 13:
+                                case "13":
                                 var dia = data[index].dia;
                                     //console.log(dia);
-                                document.getElementById(hora+dia).innerHTML = data[index].tipo;
+                                document.getElementById(hora1+dia).innerHTML = data[index].tipo;
                                     break;
-                                case 14:
+                                case "14":
                                   var dia = data[index].dia;
                                     //console.log(dia);
-                                document.getElementById(hora+dia).innerHTML = data[index].tipo;
+                                document.getElementById(hora1+dia).innerHTML = data[index].tipo;
                                     break;
-                                case 15:
+                                case "15":
                                   var dia = data[index].dia;
                                     //console.log(dia);
-                                document.getElementById(hora+dia).innerHTML = data[index].tipo;
+                                document.getElementById(hora1+dia).innerHTML = data[index].tipo;
                                     break;
-                                case 16:
+                                case "16":
                                 var dia = data[index].dia;
                                     //console.log(dia);
-                                document.getElementById(hora+dia).innerHTML = data[index].tipo;
+                                document.getElementById(hora1+dia).innerHTML = data[index].tipo;
                                     break;
-                                case 17:
+                                case "17":
                                 var dia = data[index].dia;
                                     //console.log(dia);
-                                document.getElementById(hora+dia).innerHTML = data[index].tipo;
+                                document.getElementById(hora1+dia).innerHTML = data[index].tipo;
                                     break;
-                                case 18:
+                                case "18":
                                   var dia = data[index].dia;
                                     //console.log(dia);
-                                document.getElementById(hora+dia).innerHTML = data[index].tipo;
+                                document.getElementById(hora1+dia).innerHTML = data[index].tipo;
                                     break;
                                 default:
                                     break;
@@ -257,7 +276,12 @@ function clickHandler(object) {
                        
                                         });
 
-         
+                        
+   
+
+         $(jQuery.parseJSON(JSON.stringify(clasesp))).each(function() {  
+   console.log(clasesp);
+});
 						   }
                            
                            

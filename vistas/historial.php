@@ -1,33 +1,13 @@
 <?php
 include_once '../php/conexion.php';
-if(!$profesor->is_loggedin())
+if(!$alumno->is_loggedin())
 {
- $profesor->redirect('../index.html');
+ $alumno->redirect('../index.html');
 }
 $user_id = $_SESSION['user_session'];
-$stmt = $DB_con->prepare("SELECT * FROM profesor WHERE id=:user_id");
+$stmt = $DB_con->prepare("SELECT * FROM alumno WHERE matricula=:user_id");
 $stmt->execute(array(":user_id"=>$user_id));
 $userRow=$stmt->fetch(PDO::FETCH_ASSOC);
-?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-
-<?php
-
-$servername = "localhost";
-$username = "root";
-$password = "";
-$dbname = "seguimiento_academico";
-
-// Create connection
-$conn = new mysqli($servername, $username, $password, $dbname);
-// Check connection
-if ($conn->connect_error) {
-    die("Connection failed: " . $conn->connect_error);
-} 
-
-$sql = "SELECT * FROM curso WHERE id_profesor= $user_id";
-$result = $conn->query($sql);
-
 ?>
 <!DOCTYPE html>
 <html>
@@ -286,16 +266,24 @@ $result = $conn->query($sql);
         </li>
         -->
         <li>
-          <a href="home_profesor.php">
+          <a href="home_alumno.php">
             <i class="glyphicon glyphicon-home"></i> <span>Inicio</span>
             <span class="pull-right-container">
               <!--<small class="label pull-right bg-green">Hot</small> -->
             </span>
           </a>
         </li>
+         <li>
+          <a href="<?php print'historial.php?matricula='.($userRow['matricula'])?>">
+            <i class=" fa fa-list-alt"></i> <span>Ver Historial</span>
+            <span class="pull-right-container">
+              <!--<small class="label pull-right bg-green">Hot</small> -->
+            </span>
+          </a>
+        </li>
         <li>
-          <a href="cursos.php">
-            <i class="glyphicon glyphicon-book"></i> <span>Cursos</span>
+          <a href="ver_profesores.php">
+            <i class=" fa fa-users"></i> <span>Ver Profesores</span>
             <span class="pull-right-container">
               <!--<small class="label pull-right bg-green">Hot</small> -->
             </span>
@@ -448,7 +436,7 @@ $result = $conn->query($sql);
     <!-- Content Header (Page header) -->
     <section class="content-header">
       <h1>
-        Administrar cursos
+        Historial
        <!-- <small>it all starts here</small>-->
       </h1>
 
@@ -469,11 +457,9 @@ $result = $conn->query($sql);
         <div class="col-xs-12">
           <div class="box">
             <div class="box-header">
-              <h3 class="box-title">Cursos Inscritos</h3>
+              <h3 class="box-title">Historial de cursos</h3>
               <br>
-                <a href="agregar_curso.php">
-                 <i class="glyphicon glyphicon-plus"></i> <span>Añadir Curso</span>
-                    </a>
+                
               <div class="box-tools">
                 <div class="input-group input-group-sm" style="width: 150px;">
                   <input type="text" name="table_search" class="form-control pull-right" placeholder="Search">
@@ -486,80 +472,27 @@ $result = $conn->query($sql);
             </div>
             <!-- /.box-header -->
             <div class="box-body table-responsive no-padding">
+            <div ng-app="historial" ng-controller="principal">
+	Alumno: <h4>{{alumno.nombre}} {{alumno.paterno}} {{alumno.materno}}</h4>
               <table class="table table-hover">
                 <tr>
-                  <th>NRC</th>
-                  <th>Código</th>
-                  <th>Nombre</th>
-                  <th>Sección</th>
-                  <th>Periodo</th>
-                  <th>Editar</th>
-                  <th>Eliminar</th>
-                  <th># de Alumnos</th>
-                  <th>Acciones sobre alumnos</th>
-                  <th>Criterios de evaluación</th>
-                  <th></th>
-                  <th>Anuncios</th>
+                 <th>NRC</th>
+				<th>Materia</th>
+				<th>Profesor</th>
+				<th>Periodo</th>
+				<th>Calificacion</th>
                 </tr>
-               <tr>
-<?php
-    while($row = $result->fetch_array()) {
-?>
-	<td> <?php echo $row[0] ?> 
-</td>
-	<td><?php  
-	$sql1 = "SELECT * FROM materia WHERE id= $row[1]";
-$result1 = $conn->query($sql1);
-$row1 = $result1->fetch_array();
-	echo $row1[1]; 
-	$id=$row1[1];?> 
-</td>
-	<td> <?php  
-	$sql1 = "SELECT * FROM materia WHERE id= $row[1]";
-$result1 = $conn->query($sql1);
-$row1 = $result1->fetch_array();
-	echo $row1[2]; ?> 
-	</td>
+<tr ng-repeat="x in calificaciones">
+				<td>{{x.id_curso}}</td>
+				<td>{{x.materia}}</td>
+				<td>{{x.nombre}} {{x.paterno}} {{x.materno}}</td>
+				<td>{{x.ciclo}} {{x.year}}</td>
+				<td>{{x.calificacion}}</td>
+			</tr>
 
-	<td>
-		 <?php  
-	$sql2 = "SELECT * FROM seccion WHERE id= $row[2]";
-$result2 = $conn->query($sql2);
-$row2 = $result2->fetch_array();
-	echo $row2[1]; ?>  
-	</td>
-	<td>
-				 <?php  
-	$sql3 = "SELECT * FROM periodo WHERE id= $row[4]";
-$result3 = $conn->query($sql3);
-$row3 = $result3->fetch_array();
-	echo $row3[1].$row3[2]; ?>
-	</td>
 
-	<td><a href="editar_curso.php?a=<?php echo $row[0] ?>" class="glyphicon glyphicon-edit"></a></td>
-    <td><a href="../php/eliminar_curso.php?a=<?php echo $row[0] ?>" class="glyphicon glyphicon-remove"></a></td>
-    <td><?php  
-	$sql1 = "SELECT COUNT(*) FROM inscripcion where id_curso=$row[0]";
-$result1 = $conn->query($sql1);
-$row1 = $result1->fetch_array();
-	echo $row1[0]; 
-?> </td>
-<td>
-	<a href="insertar_alumnos.php?a=<?php echo $row[0] ?>">Insertar alumnos</a>
-	<br>
-	<a href="editar_alumnos.php?a=<?php echo $row[0] ?>">Editar alumnos</a>
-	<br>
-	<a href="eliminar_alumnos.php?a=<?php echo $row[0] ?>">Eliminar alumnos</a>
-</td>
-<td><a href="criterios.php?a=<?php echo $row[0] ?>">Criterios</a></td>
-<td><a href="calificacion_final.php?a=<?php echo $row[0] ?>">Calificacion final</a></td>
-<td><a href="mis_anuncios.php?id_curso=<?php echo $row[0] ?>">Ver anuncios</a></td>
-</tr>
-
-<?php
-}
-?>
               </table>
+              </div>
             </div>
             <!-- /.box-body -->
            
@@ -789,5 +722,7 @@ $row1 = $result1->fetch_array();
 <script src="../dist/js/app.min.js"></script>
 <!-- AdminLTE for demo purposes -->
 <script src="../dist/js/demo.js"></script>
+<script src="../js/angular.min.js"></script>
+<script src="../scripts/historial.js"></script>
 </body>
 </html>
