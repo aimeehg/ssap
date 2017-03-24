@@ -14,7 +14,7 @@ $userRow=$stmt->fetch(PDO::FETCH_ASSOC);
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title>SSAP | Ver profesores</title>
+  <title>SSAP | Administrar cursos</title>
   <!-- Tell the browser to be responsive to screen width -->
   <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
   <!-- Bootstrap 3.3.6 -->
@@ -28,7 +28,7 @@ $userRow=$stmt->fetch(PDO::FETCH_ASSOC);
   <!-- AdminLTE Skins. Choose a skin from the css/skins
        folder instead of downloading all of them to reduce the load. -->
   <link rel="stylesheet" href="../dist/css/skins/_all-skins.min.css">
-  <style> li { cursor: pointer; } </style>
+
   <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
   <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
   <!--[if lt IE 9]>
@@ -187,7 +187,7 @@ $userRow=$stmt->fetch(PDO::FETCH_ASSOC);
               <!-- Menu Footer-->
               <li class="user-footer">
                 <div class="pull-left">
-                  <a href="ver_perfil_alumno.php" class="btn btn-default btn-flat">Perfil</a>
+                  <a href="ver_perfil.php" class="btn btn-default btn-flat">Perfil</a>
                 </div>
                 <div class="pull-right">
                   <a href="../php/logout.php" class="btn btn-default btn-flat">Cerrar Sesión</a>
@@ -265,7 +265,7 @@ $userRow=$stmt->fetch(PDO::FETCH_ASSOC);
           </ul>
         </li>
         -->
-         <li>
+        <li>
           <a href="home_alumno.php">
             <i class="glyphicon glyphicon-home"></i> <span>Inicio</span>
             <span class="pull-right-container">
@@ -297,7 +297,6 @@ $userRow=$stmt->fetch(PDO::FETCH_ASSOC);
             </span>
           </a>
         </li>
-        
         <!--
         <li class="treeview">
           <a href="#">
@@ -445,7 +444,7 @@ $userRow=$stmt->fetch(PDO::FETCH_ASSOC);
     <!-- Content Header (Page header) -->
     <section class="content-header">
       <h1>
-        Profesores
+       Cursos 
        <!-- <small>it all starts here</small>-->
       </h1>
 
@@ -460,65 +459,119 @@ $userRow=$stmt->fetch(PDO::FETCH_ASSOC);
 
     <!-- Main content -->
     <section class="content">
+     
+      <!-- /.box -->
+<div class="row">
+        <div class="col-xs-12">
+          <div class="box">
+            <div class="box-header">
+             
+              <br>
+                
+              <div class="box-tools">
+                <div class="input-group input-group-sm" style="width: 150px;">
+                  <input type="text" name="table_search" class="form-control pull-right" placeholder="Search">
 
-      <!-- Default box -->
-      <div class="box">
-        <div class="box-header with-border">
-          <h3 class="box-title">Lista de Profesores</h3>
-
-          <div class="box-tools pull-right">
-            <button type="button" class="btn btn-box-tool" data-widget="collapse" data-toggle="tooltip" title="Collapse">
-              <i class="fa fa-minus"></i></button>
-            <button type="button" class="btn btn-box-tool" data-widget="remove" data-toggle="tooltip" title="Remove">
-              <i class="fa fa-times"></i></button>
-          </div>
-        </div>
-       <div class="box-body">
-              <ul id="proflista">
-               
-              </ul>
-              <!-- Modal -->
-<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-  <div class="modal-dialog modal-lg" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title" id="myModalLabel">Información</h4>
-      </div>
-      <div class="modal-body">
-        E-mail:
-        <p id="email"></p>
-        Número de cubículo:
-        <p id="cub"></p>
-        Extensión telefónica:
-        <p id="tel"></p>
-        Horario:
-        <table id="asesorias" class="table">
-    <thead>
-      <tr>
-        <th>Hora</th>
-        <th id="Lunes">Lunes</th>
-        <th id="Martes">Martes</th>
-        <th id="Miercoles">Miércoles</th>
-        <th id="Jueves">Jueves</th>
-        <th id="Viernes">Viernes</th>
-      </tr>
-    </thead>
-    <tbody id="tbodyid">
-
-    </tbody>
-  </table>
-
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
-        
-      </div>
-    </div>
-  </div>
-</div>
+                  <div class="input-group-btn">
+                    <button type="submit" class="btn btn-default"><i class="fa fa-search"></i></button>
+                  </div>
+                </div>
+              </div>
             </div>
+            <!-- /.box-header -->
+            <div class="box-body table-responsive no-padding">
+            <div ng-app="historial" ng-controller="principal">
+	
+              <table class="table table-hover">
+                <tr>
+                 <th>NRC</th>
+				<th>Nombre</th>
+				<th>Sección</th>
+				<th>Profesor</th>
+				<th>Periodo</th>
+                <th>Calificación final</th>
+                </tr>
+<tr>
+		<td>
+  	<?php
+$stmt1 = $DB_con->prepare("SELECT * FROM inscripcion WHERE id_alumno =:user_id");
+$stmt1->execute(array(":user_id"=>$user_id));
+$ins=$stmt1->fetch(PDO::FETCH_ASSOC);
 
+echo $ins['id_curso'];
+  	?>
+  	</td>
+ 
+  <td>
+  	<?php
+$stmt2 = $DB_con->prepare("SELECT * FROM curso WHERE nrc =:id_mat");
+$stmt2->execute(array(":id_mat"=>$ins['id_curso']));
+$cur=$stmt2->fetch(PDO::FETCH_ASSOC);
+
+$stmt3 = $DB_con->prepare("SELECT * FROM materia WHERE id =:id_mat");
+$stmt3->execute(array(":id_mat"=>$cur['id_materia']));
+$mat=$stmt3->fetch(PDO::FETCH_ASSOC);
+
+echo $mat['nombre'];
+  	?>
+  	</td>
+
+<td>
+	<?php
+$stmt4 = $DB_con->prepare("SELECT * FROM seccion WHERE id =:id_sec");
+$stmt4->execute(array(":id_sec"=>$cur['seccion']));
+$secc=$stmt4->fetch(PDO::FETCH_ASSOC);
+
+echo $secc['secc'];
+	?>
+</td>
+
+
+<td>
+<?php
+$stmt5 = $DB_con->prepare("SELECT * FROM profesor WHERE id =:id_pro");
+$stmt5->execute(array(":id_pro"=>$cur['id_profesor']));
+$prof=$stmt5->fetch(PDO::FETCH_ASSOC);
+
+echo $prof['nombre']." ".$prof['paterno']." ".$prof['materno'];
+	?>
+</td>
+
+<td>
+<?php
+$stmt6 = $DB_con->prepare("SELECT * FROM periodo WHERE id =:id_per");
+$stmt6->execute(array(":id_per"=>$cur['periodo']));
+$per=$stmt6->fetch(PDO::FETCH_ASSOC);
+
+echo $per['ciclo']." ".$per['year'];
+	?>
+</td>
+
+<td>
+<?php
+$stmt7 = $DB_con->prepare("SELECT * FROM inscripcion WHERE id_curso =:id_cur and id_alumno=:id_alu");
+$stmt7->execute(array(":id_cur"=>$cur['nrc'],":id_alu"=>$userRow['matricula']));
+$cal=$stmt7->fetch(PDO::FETCH_ASSOC);
+
+echo $cal['calificacion'];
+  ?>
+</td>
+
+<td>
+  <a href="Materia.php?a=<?php echo $cur['nrc'] ?>">Detalles</a>
+</td>
+			</tr>
+
+
+              </table>
+              </div>
+            </div>
+            <!-- /.box-body -->
+           
+          </div>
+          <!-- /.box -->
+          
+         
     </section>
     <!-- /.content -->
   </div>
@@ -730,7 +783,7 @@ $userRow=$stmt->fetch(PDO::FETCH_ASSOC);
 <!-- ./wrapper -->
 
 <!-- jQuery 2.2.3 -->
-<script src="../js/jquery-3.1.1.min.js"></script>
+<script src="../plugins/jQuery/jquery-2.2.3.min.js"></script>
 <!-- Bootstrap 3.3.6 -->
 <script src="../bootstrap/js/bootstrap.min.js"></script>
 <!-- SlimScroll -->
@@ -741,6 +794,7 @@ $userRow=$stmt->fetch(PDO::FETCH_ASSOC);
 <script src="../dist/js/app.min.js"></script>
 <!-- AdminLTE for demo purposes -->
 <script src="../dist/js/demo.js"></script>
-<script src="../scripts/ver_profesores.js"></script>
+<script src="../js/angular.min.js"></script>
+<script src="../scripts/historial.js"></script>
 </body>
 </html>

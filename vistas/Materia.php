@@ -8,7 +8,13 @@ $user_id = $_SESSION['user_session'];
 $stmt = $DB_con->prepare("SELECT * FROM alumno WHERE matricula=:user_id");
 $stmt->execute(array(":user_id"=>$user_id));
 $userRow=$stmt->fetch(PDO::FETCH_ASSOC);
+$a=$_GET['a'];
+
+$stmt1 = $DB_con->prepare("SELECT * FROM criterios_evaluacion WHERE nrc_curso=:id_cur");
+$stmt1->execute(array(":id_cur"=>$a));
+
 ?>
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -273,14 +279,6 @@ $userRow=$stmt->fetch(PDO::FETCH_ASSOC);
             </span>
           </a>
         </li>
-                <li>
-          <a href="ver_cursos.php">
-            <i class=" fa fa-book"></i> <span>Ver Cursos</span>
-            <span class="pull-right-container">
-              <!--<small class="label pull-right bg-green">Hot</small> -->
-            </span>
-          </a>
-        </li>
          <li>
           <a href="<?php print'historial.php?matricula='.($userRow['matricula'])?>">
             <i class=" fa fa-list-alt"></i> <span>Ver Historial</span>
@@ -445,7 +443,7 @@ $userRow=$stmt->fetch(PDO::FETCH_ASSOC);
     <!-- Content Header (Page header) -->
     <section class="content-header">
       <h1>
-        Profesores
+        Detalles
        <!-- <small>it all starts here</small>-->
       </h1>
 
@@ -464,7 +462,7 @@ $userRow=$stmt->fetch(PDO::FETCH_ASSOC);
       <!-- Default box -->
       <div class="box">
         <div class="box-header with-border">
-          <h3 class="box-title">Lista de Profesores</h3>
+          
 
           <div class="box-tools pull-right">
             <button type="button" class="btn btn-box-tool" data-widget="collapse" data-toggle="tooltip" title="Collapse">
@@ -474,49 +472,21 @@ $userRow=$stmt->fetch(PDO::FETCH_ASSOC);
           </div>
         </div>
        <div class="box-body">
-              <ul id="proflista">
-               
-              </ul>
-              <!-- Modal -->
-<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-  <div class="modal-dialog modal-lg" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title" id="myModalLabel">Información</h4>
-      </div>
-      <div class="modal-body">
-        E-mail:
-        <p id="email"></p>
-        Número de cubículo:
-        <p id="cub"></p>
-        Extensión telefónica:
-        <p id="tel"></p>
-        Horario:
-        <table id="asesorias" class="table">
-    <thead>
-      <tr>
-        <th>Hora</th>
-        <th id="Lunes">Lunes</th>
-        <th id="Martes">Martes</th>
-        <th id="Miercoles">Miércoles</th>
-        <th id="Jueves">Jueves</th>
-        <th id="Viernes">Viernes</th>
-      </tr>
-    </thead>
-    <tbody id="tbodyid">
-
-    </tbody>
-  </table>
-
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
-        
-      </div>
-    </div>
-  </div>
-</div>
+         <?php
+         while($cri=$stmt1->fetch(PDO::FETCH_ASSOC)){
+	echo "<h3>";
+	echo $cri['descripcion'];
+	echo "</h3>";
+	$ind=0;
+$stmt2 = $DB_con->prepare("SELECT * FROM evaluacion WHERE nrc_curso=:id_cur and id_criterios=:crit and id_alumno=:id_alumno");
+$stmt2->execute(array(":id_cur"=>$a,"crit"=>$cri['id'],"id_alumno"=>$user_id));
+while ($eval=$stmt2->fetch(PDO::FETCH_ASSOC)) {
+	$ind+=1;
+	echo $cri['descripcion']." ".$ind." =".$eval['calif']."<br>";
+}
+$ind=0;
+}
+         ?>
             </div>
 
     </section>
@@ -741,6 +711,6 @@ $userRow=$stmt->fetch(PDO::FETCH_ASSOC);
 <script src="../dist/js/app.min.js"></script>
 <!-- AdminLTE for demo purposes -->
 <script src="../dist/js/demo.js"></script>
-<script src="../scripts/ver_profesores.js"></script>
+
 </body>
 </html>

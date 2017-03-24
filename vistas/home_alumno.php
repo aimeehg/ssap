@@ -274,6 +274,14 @@ $userRow=$stmt->fetch(PDO::FETCH_ASSOC);
           </a>
         </li>
         <li>
+          <a href="ver_cursos.php">
+            <i class=" fa fa-book"></i> <span>Ver Cursos</span>
+            <span class="pull-right-container">
+              <!--<small class="label pull-right bg-green">Hot</small> -->
+            </span>
+          </a>
+        </li>
+        <li>
           <a href="<?php print'historial.php?matricula='.($userRow['matricula'])?>">
             <i class=" fa fa-list-alt"></i> <span>Ver Historial</span>
             <span class="pull-right-container">
@@ -289,7 +297,7 @@ $userRow=$stmt->fetch(PDO::FETCH_ASSOC);
             </span>
           </a>
         </li>
-         
+          
         
         <!--
         <li class="treeview">
