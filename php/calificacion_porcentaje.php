@@ -11,9 +11,9 @@ $userRow=$stmt->fetch(PDO::FETCH_ASSOC);
 
 $stmt2 = $DB_con->prepare("SELECT * FROM evaluacion");
 $stmt2->execute();
+$cc=$stmt2->rowCount();
 
-
-for ($i=1; $i<=25 ; $i++) { 
+for ($i=1; $i<=$cc ; $i++) { 
 $stmt1 = $DB_con->prepare("UPDATE evaluacion set calif=:calif WHERE id=:id");
 $ind=(string)$_POST[$i];
 echo $ind."<br>";

@@ -566,7 +566,7 @@ $stmt7 = $DB_con->prepare("UPDATE inscripcion set calificacion=:prom WHERE id_cu
     $stmt7->bindParam(":prom",$promedio);
     $stmt7->bindParam(":curso",$nrc);
     $stmt7->bindParam(":alumno",$nombre['matricula']);
-
+    $stmt7->execute();
 
 
 $promedio=0;
@@ -580,15 +580,9 @@ $promedio=0;
 
               </table>
               <?php
-        if($stmt7->execute())
-        {
  echo '<script language="javascript">alert("Calificaciones actualizadas")</script>'; 
 //echo '<script language="javascript">window.location.href="home.php" ;</script>'; 
-        }
-        else
-        {
- echo '<script language="javascript">alert("Error")</script>'; 
-        }
+ 
 ?>
             </div>
             <!-- /.box-body -->
