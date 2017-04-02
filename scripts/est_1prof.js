@@ -1,87 +1,71 @@
- $( document ).ready(function() {
-var materias = [];
-var promedios = [];
+$( document ).ready(function() {
+    var materias = [];
+    var promedios = [];
     // Get context with jQuery - using jQuery's .get() method.
     var areaChartCanvas = $("#areaChart").get(0).getContext("2d");
     // This will get the first returned node in the jQuery collection.
     var areaChart = new Chart(areaChartCanvas);
 
- $("#demo-form").on('submit', function(e) {
-    e.preventDefault();
-     var p = document.getElementById("periodo");
-     var periodo = p.options[p.selectedIndex].text;
-     var y = document.getElementById("year");
-     var year = y.options[y.selectedIndex].text;
-         if(materias.length != 0 && promedios.length != 0){
-             materias = [];
-             promedios = [];
+    $("#demo-form").on('submit', function(e) {
+        e.preventDefault();
+        //obtener elementos seleccionados
+        var p = document.getElementById("periodo");
+        var periodo = p.options[p.selectedIndex].text;
+        var y = document.getElementById("year");
+        var year = y.options[y.selectedIndex].text;
+        //limpiar
+        if(materias.length != 0 && promedios.length != 0){
+            materias = [];
+            promedios = [];
             $("#divg").empty();
             $("#divg").html('<canvas id="areaChart" style="height:250px"></canvas>');
             areaChartCanvas = $("#areaChart").get(0).getContext("2d");
             areaChart = new Chart(areaChartCanvas);
          }
-
-     if(periodo == "Seleccionar" || year == "Seleccionar"){
-         alert("Debes seleccionar las dos opciones");
-     }else{
-       
-    if(periodo != "Seleccionar"){
-         if(year != "Seleccionar"){
-         if(periodo == "Otoño")
-            periodo = "Otono";
-         $.ajax({	
-				type : 'POST',
-				url  : '../php/est_1prof.php',
-                data: {id:id_profe, periodo: periodo, year:year},
-                dataType: 'json',
-				success :  function(data){						
-			
-                        if (data.length != 0){
-                                     $.each(data, function(index) {
-                                        
-                                       
-                                        materias.push(data[index].nombre);
-                                               $.ajax({	
-				                                    type : 'POST',
-                                                    url  : '../php/est_1prof_avg.php',
-                                                    data: {id:id_profe, nrc:data[index].nrc},
-                                                    dataType: 'json',
-                                                    success :  function(data){						
-                                                      
-                                                                        $.each(data, function(index) {
-                                                                        
-                                                                            promedios.push(parseFloat(data[index].promedio));
-
-                                                                        });
-                                                                       
-                                                                      
-                                                                        },
-                                                                        complete: function (data) {
-                                                                        dibujarChart();
-                                                                        }
-                                                                       
-                                                                }); //2do ajax
-
-                       
-                                        });
-                                       
-						   }else alert("No hay resultados para la búsqueda");
-                }
+    
+        if(periodo == "Seleccionar" || year == "Seleccionar"){
+            alert("Debes seleccionar las dos opciones");
+        }else{
+            if(periodo != "Seleccionar"){
+                if(year != "Seleccionar"){
+                if(periodo == "Otoño")
+                    periodo = "Otono";
+                 $.ajax({	
+				    type : 'POST',
+				    url  : '../php/est_1prof.php',
+                    data: {id:id_profe, periodo: periodo, year:year},
+                    dataType: 'json',
+				    success :  function(data){						
+			            if (data.length != 0){
+                            $.each(data, function(index) {
+                                materias.push(data[index].nombre);
+                                $.ajax({	
+				                    type : 'POST',
+                                    url  : '../php/est_1prof_avg.php',
+                                    data: {id:id_profe, nrc:data[index].nrc},
+                                    dataType: 'json',
+                                    success :  function(data){						             
+                                        $.each(data, function(index) {
+                                            promedios.push(parseFloat(data[index].promedio));
+                                        });      
+                                    },
+                                    complete: function (data) {
+                                        dibujarChart();
+                                    } 
+                                }); //2do ajax
+                            });
+						}else alert("No hay resultados para la búsqueda");
+                    }
 				}); //1er ajax
-     }
-     }
-     }
- 
-  });
+            }
+        }
+     } 
+});
 
-  function dibujarChart(){
+function dibujarChart(){
     //--------------
     //- AREA CHART -
     //--------------
-   
-
-    //areaChart.reset();
-
     var areaChartData = {
       labels: materias,
       datasets: [
