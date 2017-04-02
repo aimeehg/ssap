@@ -8,13 +8,14 @@ $user_id = $_SESSION['user_session'];
 $stmt = $DB_con->prepare("SELECT * FROM profesor WHERE id=:user_id");
 $stmt->execute(array(":user_id"=>$user_id));
 $userRow=$stmt->fetch(PDO::FETCH_ASSOC);
+$id_profe =  $_GET['id'];
 ?>
 <!DOCTYPE html>
 <html>
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title>SSAP | Página principal del coordinador</title>
+  <title>SSAP | Estadísticas de aprovechamiento por área profesor</title>
   <!-- Tell the browser to be responsive to screen width -->
   <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
   <!-- Bootstrap 3.3.6 -->
@@ -35,6 +36,9 @@ $userRow=$stmt->fetch(PDO::FETCH_ASSOC);
   <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
   <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
   <![endif]-->
+  <script type="text/javascript">
+   var id_profe = "<?php echo $id_profe; ?>";
+</script>
 </head>
 <body class="hold-transition skin-blue sidebar-mini">
 <!-- Site wrapper -->
@@ -459,7 +463,30 @@ $userRow=$stmt->fetch(PDO::FETCH_ASSOC);
           </div>
         </div>
         <div class="box-body">
-          Aquí podrá realizar las funciones del coordinador...
+         <div class="col-xs-4">
+            <form role="form" id="demo-form"  method="POST">
+                  <label>Periodo</label>
+                  <select id="periodo" class="form-control">
+                    <option>Seleccionar</option>
+                    <option>Primavera</option>
+                    <option>Verano</option>
+                    <option>Otoño</option>
+                  </select>
+          <label>Año</label>
+                  <select id="year" class="form-control">
+                    <option>Seleccionar</option>
+                    <option>2017</option>
+                  </select>
+              <div class="box-footer">
+                <button type="submit" class="btn btn-primary">Aceptar</button>
+              </div>
+            </form>
+        </div>
+     
+     <div class="chart" id="divg">
+     <label>Promedios por materia</label>
+                <canvas id="areaChart" style="height:250px"></canvas>
+              </div>
         </div>
         <!-- /.box-body -->
         <div class="box-footer">
@@ -691,5 +718,8 @@ $userRow=$stmt->fetch(PDO::FETCH_ASSOC);
 <script src="../dist/js/app.min.js"></script>
 <!-- AdminLTE for demo purposes -->
 <script src="../dist/js/demo.js"></script>
+<!-- ChartJS 1.0.1 -->
+<script src="../plugins/chartjs/Chart.min.js"></script>
+<script src="../scripts/est_1prof.js"></script>
 </body>
 </html>

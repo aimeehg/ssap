@@ -5,6 +5,61 @@ class profesor{
     function __construct($DB_con){
       $this->db = $DB_con;
     }
+
+   
+               public function getAVG($id,$nrc){
+                try
+  { 
+  
+   $stmt = $this->db->prepare("SELECT AVG(inscripcion.calificacion) AS promedio FROM curso inner JOIN inscripcion on curso.nrc = inscripcion.id_curso where 
+   curso.id_profesor = :id AND curso.nrc = :nrc");
+   $stmt->execute(array(":id"=>$id, ":nrc"=>$nrc));
+   
+  // $count = $stmt->rowCount();
+       $jsonData = array();
+       while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+
+            $jsonData[] = $row;
+            // echo gettype($row), "\n";
+            
+   
+       }
+       //print_r(json_encode($jsonData, JSON_PRETTY_PRINT));
+       echo json_encode($jsonData);
+    
+  }
+  catch(PDOException $e){
+   echo $e->getMessage();
+  }
+
+    }
+           public function getNRCPY($id,$periodo,$year){
+                try
+  { 
+  
+   $stmt = $this->db->prepare("SELECT curso.nrc, materia.nombre from curso inner join periodo on curso.periodo = periodo.id
+    inner join materia on curso.id_materia = materia.id WHERE periodo.ciclo = :periodo AND periodo.year = :year AND curso.id_profesor = :id");
+    $periodo2 = " ".$periodo." ";
+   $stmt->execute(array(":id"=>$id, ":periodo"=>$periodo2, ":year"=>$year));
+   
+  // $count = $stmt->rowCount();
+       $jsonData = array();
+       while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+
+            $jsonData[] = $row;
+            // echo gettype($row), "\n";
+            
+   
+       }
+       //print_r(json_encode($jsonData, JSON_PRETTY_PRINT));
+       echo json_encode($jsonData);
+    
+  }
+  catch(PDOException $e){
+   echo $e->getMessage();
+  }
+
+    }
          public function getClases($id){
                 try
   { 

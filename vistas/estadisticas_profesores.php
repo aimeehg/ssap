@@ -14,7 +14,7 @@ $userRow=$stmt->fetch(PDO::FETCH_ASSOC);
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title>SSAP | Página principal del coordinador</title>
+  <title>SSAP | Estadísticas de aprovechamiento por área profesor</title>
   <!-- Tell the browser to be responsive to screen width -->
   <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
   <!-- Bootstrap 3.3.6 -->
@@ -459,7 +459,9 @@ $userRow=$stmt->fetch(PDO::FETCH_ASSOC);
           </div>
         </div>
         <div class="box-body">
-          Aquí podrá realizar las funciones del coordinador...
+          <ul id="proflista">
+               
+              </ul>
         </div>
         <!-- /.box-body -->
         <div class="box-footer">
@@ -691,5 +693,6 @@ $userRow=$stmt->fetch(PDO::FETCH_ASSOC);
 <script src="../dist/js/app.min.js"></script>
 <!-- AdminLTE for demo purposes -->
 <script src="../dist/js/demo.js"></script>
+<script src="../scripts/estadisticas_prof.js"></script>
 </body>
 </html>

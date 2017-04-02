@@ -1,20 +1,41 @@
 <?php
 include_once '../php/conexion.php';
-if(!$coordinador->is_loggedin())
+if(!$profesor->is_loggedin())
 {
- $coordinador->redirect('../index.html');
+ $profesor->redirect('../index.html');
 }
 $user_id = $_SESSION['user_session'];
 $stmt = $DB_con->prepare("SELECT * FROM profesor WHERE id=:user_id");
 $stmt->execute(array(":user_id"=>$user_id));
 $userRow=$stmt->fetch(PDO::FETCH_ASSOC);
+$idprofesor = $userRow['id'];
+?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<?php
+
+$servername = "localhost";
+$username = "root";
+$password = "";
+$dbname = "seguimiento_academico";
+
+// Create connection
+$conn = new mysqli($servername, $username, $password, $dbname);
+// Check connection
+if ($conn->connect_error) {
+    die("Connection failed: " . $conn->connect_error);
+} 
+
+$sql = "SELECT * FROM curso WHERE id_profesor= $user_id";
+$result = $conn->query($sql);
+
 ?>
 <!DOCTYPE html>
 <html>
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title>SSAP | Página principal del coordinador</title>
+  <title>SSAP | Ver perfil</title>
   <!-- Tell the browser to be responsive to screen width -->
   <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
   <!-- Bootstrap 3.3.6 -->
@@ -28,6 +49,8 @@ $userRow=$stmt->fetch(PDO::FETCH_ASSOC);
   <!-- AdminLTE Skins. Choose a skin from the css/skins
        folder instead of downloading all of them to reduce the load. -->
   <link rel="stylesheet" href="../dist/css/skins/_all-skins.min.css">
+     <link rel="stylesheet" type="text/css" href="../css/parsley.css">
+  
 
   <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
   <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -37,6 +60,10 @@ $userRow=$stmt->fetch(PDO::FETCH_ASSOC);
   <![endif]-->
 </head>
 <body class="hold-transition skin-blue sidebar-mini">
+            <script type="application/javascript">
+            var idprofesor = "<?php echo $idprofesor; ?>";
+           // console.log(idprofesor);
+                </script>
 <!-- Site wrapper -->
 <div class="wrapper">
 
@@ -167,7 +194,6 @@ $userRow=$stmt->fetch(PDO::FETCH_ASSOC);
             
                 </p>
               </li>
-              
               <!-- Menu Body 
               <li class="user-body">
                 <div class="row">
@@ -188,7 +214,7 @@ $userRow=$stmt->fetch(PDO::FETCH_ASSOC);
               <!-- Menu Footer-->
               <li class="user-footer">
                 <div class="pull-left">
-                  <a href="ver_perfil_coordinador.php" class="btn btn-default btn-flat">Perfil</a>
+                  <a href="ver_perfil.php" class="btn btn-default btn-flat">Perfil</a>
                 </div>
                 <div class="pull-right">
                   <a href="../php/logout.php" class="btn btn-default btn-flat">Cerrar Sesión</a>
@@ -266,17 +292,9 @@ $userRow=$stmt->fetch(PDO::FETCH_ASSOC);
           </ul>
         </li>
         -->
-         <li>
+        <li>
           <a href="home_coordinador.php">
             <i class="glyphicon glyphicon-home"></i> <span>Inicio</span>
-            <span class="pull-right-container">
-              <!--<small class="label pull-right bg-green">Hot</small> -->
-            </span>
-          </a>
-        </li>
-        <li>
-          <a href="estadisticas_profesores.php">
-            <i class="fa fa-bar-chart"></i> <span>Estadísticas profesores</span>
             <span class="pull-right-container">
               <!--<small class="label pull-right bg-green">Hot</small> -->
             </span>
@@ -429,45 +447,163 @@ $userRow=$stmt->fetch(PDO::FETCH_ASSOC);
   <div class="content-wrapper">
     <!-- Content Header (Page header) -->
     <section class="content-header">
-      <h1>
-        Página principal de Coordinador
-       <!-- <small>it all starts here</small>-->
-      </h1>
-
-      <!--
-      <ol class="breadcrumb">
-        <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
-        <li><a href="#">Examples</a></li>
-        <li class="active">Blank page</li>
-      </ol>
-      -->
+  
     </section>
 
     <!-- Main content -->
     <section class="content">
 
-      <!-- Default box -->
-      <div class="box">
-        <div class="box-header with-border">
-          <h3 class="box-title">Bienvenido</h3>
+      <div class="row">
+        <div class="col-md-3">
 
-          <div class="box-tools pull-right">
-            <button type="button" class="btn btn-box-tool" data-widget="collapse" data-toggle="tooltip" title="Collapse">
-              <i class="fa fa-minus"></i></button>
-            <button type="button" class="btn btn-box-tool" data-widget="remove" data-toggle="tooltip" title="Remove">
-              <i class="fa fa-times"></i></button>
+          <!-- Profile Image -->
+          <div class="box box-primary">
+            <div class="box-body box-profile">
+              <img class="profile-user-img img-responsive img-circle" src="../dist/img/user2-160x160.png" alt="User profile picture">
+
+             <!-- <h3 class="profile-username text-center">Nina Mcintire</h3>
+
+              <p class="text-muted text-center">Software Engineer</p>
+
+              <ul class="list-group list-group-unbordered">
+                <li class="list-group-item">
+                  <b>Followers</b> <a class="pull-right">1,322</a>
+                </li>
+                <li class="list-group-item">
+                  <b>Following</b> <a class="pull-right">543</a>
+                </li>
+                <li class="list-group-item">
+                  <b>Friends</b> <a class="pull-right">13,287</a>
+                </li>
+              </ul>
+
+              <a href="#" class="btn btn-primary btn-block"><b>Follow</b></a>
+              -->
+            </div>
+            <!-- /.box-body -->
           </div>
+          <!-- /.box -->
+
+          <!-- About Me Box -->
+          <div class="box box-primary">
+            <div class="box-header with-border">
+              <h3 class="box-title">Mis datos</h3>
+            </div>
+            <!-- /.box-header -->
+            <div class="box-body">
+              <strong><i class="fa fa-circle margin-r-5"></i> ID</strong>
+
+              <p id="id" class="text-muted"></p>
+
+              <hr>
+
+              <strong><i class="fa fa-user margin-r-5"></i> Nombre Completo </strong>
+
+              <p id="nombre" class="text-muted"></p>
+
+              <hr>
+
+              <strong><i class="fa fa-envelope margin-r-5"></i> E-mail</strong>
+
+              <p id="email" class="text-muted"></p>
+              <hr>
+
+              <strong><i class="fa fa-cube margin-r-5"></i> Número de Cubículo</strong>
+
+              <p id="num_cub" class="text-muted"></p>
+              <hr>
+
+              <strong><i class="fa fa-phone margin-r-5"></i> Extensión Telefónica</strong>
+              <p id="ext_tel" class="text-muted"></p>
+              <hr>
+            </div>
+            <!-- /.box-body -->
+          </div>
+          <!-- /.box -->
         </div>
-        <div class="box-body">
-          Aquí podrá realizar las funciones del coordinador...
+        <!-- /.col -->
+        <div class="col-md-9">
+          <div class="nav-tabs-custom">
+            <ul class="nav nav-tabs">
+              <li class="active"><a href="#settings" data-toggle="tab">Editar</a></li>
+            </ul>
+            
+
+              <div class="active tab-pane" id="settings">
+                <form id="demo-form" class="form-horizontal">
+                  <div class="form-group">
+                    <label for="nombre" class="col-sm-2 control-label">Nombre</label>
+
+                    <div class="col-sm-10">
+                      <input type="text" class="form-control" id="nombre_e" name="nombre" maxlength="35">
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label for="paterno" class="col-sm-2 control-label">Apellido paterno</label>
+
+                    <div class="col-sm-10">
+                      <input type="text" class="form-control" id="paterno_e" name="paterno" maxlength="35">
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label for="materno" class="col-sm-2 control-label">Apellido materno</label>
+
+                    <div class="col-sm-10">
+                      <input type="text" class="form-control" id="materno_e" name="materno" maxlength="35">
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label for="email" class="col-sm-2 control-label">Email</label>
+
+                    <div class="col-sm-10">
+                      <input type="email" class="form-control" id="email_e" name="email" maxlength="32">
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label for="password" class="col-sm-2 control-label">Contraseña</label>
+
+                    <div class="col-sm-10">
+                      <input type="password" class="form-control" id="password_e" name="password" data-parsley-validar-pass-tam="7" data-parsley-validar-pass-p="/^P/g">
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label for="passworddd" class="col-sm-2 control-label">Confirmar Contraseña</label>
+
+                    <div class="col-sm-10">
+                      <input type="password" class="form-control" id="passworddd" name="passworddd" data-parsley-validar-pass-tam="7" data-parsley-validar-pass-p="/^P/g" data-parsley-equalto="#password_e">
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label for="num_cub" class="col-sm-2 control-label">Número de Cubículo</label>
+
+                    <div class="col-sm-10">
+                      <input type="number" class="form-control" id="num_cub_e" name="num_cub" data-parsley-validar-tam="3"></input>
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label for="ext_tel" class="col-sm-2 control-label">Extensión Telefónica</label>
+
+                    <div class="col-sm-10">
+                      <input type="number" class="form-control" id="ext_tel_e" name="ext_tel" data-parsley-validar-tam="4">
+                    </div>
+                  </div>
+                  
+                  <div class="form-group">
+                    <div class="col-sm-offset-2 col-sm-10">
+                      <button type="submit" class="btn btn-danger">Enviar</button>
+                    </div>
+                  </div>
+                </form>
+              </div>
+              <!-- /.tab-pane -->
+            </div>
+            <!-- /.tab-content -->
+          </div>
+          <!-- /.nav-tabs-custom -->
         </div>
-        <!-- /.box-body -->
-        <div class="box-footer">
-          
-        </div>
-        <!-- /.box-footer-->
+        <!-- /.col -->
       </div>
-      <!-- /.box -->
+      <!-- /.row -->
 
     </section>
     <!-- /.content -->
@@ -680,7 +816,7 @@ $userRow=$stmt->fetch(PDO::FETCH_ASSOC);
 <!-- ./wrapper -->
 
 <!-- jQuery 2.2.3 -->
-<script src="../js/jquery-3.1.1.min.js"></script>
+<script src="../plugins/jQuery/jquery-2.2.3.min.js"></script>
 <!-- Bootstrap 3.3.6 -->
 <script src="../bootstrap/js/bootstrap.min.js"></script>
 <!-- SlimScroll -->
@@ -689,7 +825,14 @@ $userRow=$stmt->fetch(PDO::FETCH_ASSOC);
 <script src="../plugins/fastclick/fastclick.js"></script>
 <!-- AdminLTE App -->
 <script src="../dist/js/app.min.js"></script>
+<script src="../js/parsley.js"></script>
+   <!-- script para validacion -->
+        <script src="../js/validacion.js"></script>
 <!-- AdminLTE for demo purposes -->
 <script src="../dist/js/demo.js"></script>
+<script src="../scripts/ver_perfil.js"></script>
+
+      <!-- script para el registro -->
+      
 </body>
 </html>
