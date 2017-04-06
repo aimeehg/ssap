@@ -12,25 +12,31 @@ $userRow=$stmt->fetch(PDO::FETCH_ASSOC);
 $stmt2 = $DB_con->prepare("SELECT * FROM evaluacion");
 $stmt2->execute();
 $cc=$stmt2->rowCount();
+$cuenta=0;
 
 for ($i=1; $i<=$cc ; $i++) { 
 $stmt1 = $DB_con->prepare("UPDATE evaluacion set calif=:calif WHERE id=:id");
 $ind=(string)$_POST[$i];
-echo $ind."<br>";
-$stmt1->bindParam("calif",$ind);
-$stmt1->bindParam("id",$i);
-if($stmt1->execute()){
- echo '<script language="javascript">alert("Calificaciones subidas correctamente")</script>'; 
-echo '<script language="javascript">window.location.href="../vistas/cursos.php" ;</script>'; 
-}
-else{
- echo '<script language="javascript">alert("Error")</script>'; 
 
-echo '<script language="javascript">window.location.href="../vistas/cursos.php" ;</script>'; 
-}
+if($ind<=10 && $ind>=0){
+$stmt1->bindParam(":calif",$ind);
+$stmt1->bindParam(":id",$i);
+$stmt1->execute();
+}else{
+	$cuenta+=1;
 
 }
 
-
+}
+if($cuenta>0)
+{
+echo '<script language="javascript">alert("Algunas calificaciones no se subieron con exito por no estar dentro del rango de 0 a 10")</script>'; 
+echo '<script language="javascript">window.location.href="home.php" ;</script>'; 
+}
+else
+{
+echo '<script language="javascript">alert("Calificaciones subidas correctamente")</script>'; 
+echo '<script language="javascript">window.location.href="home.php" ;</script>'; 
+}
 
 ?>

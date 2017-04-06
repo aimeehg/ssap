@@ -470,7 +470,7 @@ $userRow=$stmt->fetch(PDO::FETCH_ASSOC);
 			<p>{{a.descripcion}}</p>
 		</div>
 		<textarea type="text" placeholder="Nuevo anuncio" ng-model="anuncio.descripcion" rows="5" cols="50"></textarea><br>
-		<input type="text" placeholder="Fecha" ng-model="anuncio.fecha_final">
+		<input type="date" ng-model="anuncio.fecha_final" id="fechita" required>
 		<button type="button" ng-click="subir()">Subir</button>
 	</div>
         </div>
