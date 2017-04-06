@@ -31,12 +31,12 @@ $stmt1->execute();
 if($cuenta>0)
 {
 echo '<script language="javascript">alert("Algunas calificaciones no se subieron con exito por no estar dentro del rango de 0 a 10")</script>'; 
-echo '<script language="javascript">window.location.href="home.php" ;</script>'; 
+echo '<script language="javascript">window.location.href="../vistas/cursos.php" ;</script>'; 
 }
 else
 {
 echo '<script language="javascript">alert("Calificaciones subidas correctamente")</script>'; 
-echo '<script language="javascript">window.location.href="home.php" ;</script>'; 
+echo '<script language="javascript">window.location.href="../vistas/cursos.php" ;</script>'; 
 }
 
 ?>

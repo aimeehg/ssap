@@ -14,7 +14,7 @@ $userRow=$stmt->fetch(PDO::FETCH_ASSOC);
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title>SSAP | Estadísticas de aprovechamiento por área profesor</title>
+  <title>SSAP | Programación Académica</title>
   <!-- Tell the browser to be responsive to screen width -->
   <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
   <!-- Bootstrap 3.3.6 -->
@@ -274,7 +274,7 @@ $userRow=$stmt->fetch(PDO::FETCH_ASSOC);
             </span>
           </a>
         </li>
-                 <li>
+         <li>
           <a href="programacionAcademica.php">
             <i class="fa fa-calendar-check-o"></i> <span>Programación académica</span>
             <span class="pull-right-container">
@@ -438,7 +438,23 @@ $userRow=$stmt->fetch(PDO::FETCH_ASSOC);
     <!-- Content Header (Page header) -->
     <section class="content-header">
       <h1>
-        Página principal de Coordinador
+        Ver programación académica
+       <!-- <small>it all starts here</small>-->
+      </h1>
+
+      <!--
+      <ol class="breadcrumb">
+        <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
+        <li><a href="#">Examples</a></li>
+        <li class="active">Blank page</li>
+      </ol>
+      -->
+    </section>
+
+    <!-- Main content -->
+    <section class="content-header">
+      <h1>
+     
        <!-- <small>it all starts here</small>-->
       </h1>
 
@@ -453,32 +469,167 @@ $userRow=$stmt->fetch(PDO::FETCH_ASSOC);
 
     <!-- Main content -->
     <section class="content">
-
-      <!-- Default box -->
-      <div class="box">
-        <div class="box-header with-border">
-          <h3 class="box-title">Estadísticas de aprovechamiento por profesor</h3>
-
-          <div class="box-tools pull-right">
-            <button type="button" class="btn btn-box-tool" data-widget="collapse" data-toggle="tooltip" title="Collapse">
-              <i class="fa fa-minus"></i></button>
-            <button type="button" class="btn btn-box-tool" data-widget="remove" data-toggle="tooltip" title="Remove">
-              <i class="fa fa-times"></i></button>
-          </div>
-        </div>
-        <div class="box-body">
-          <ul id="proflista">
-               
-              </ul>
-        </div>
-        <!-- /.box-body -->
-        <div class="box-footer">
-          
-        </div>
-        <!-- /.box-footer-->
-      </div>
+     
       <!-- /.box -->
+<div class="row">
+        <div class="col-xs-12">
+          <div class="box">
+            <div class="box-header">
+              <h3 class="box-title">Programación académica</h3>
+              <br>
+              
+              <div class="box-tools">
+                <div class="input-group input-group-sm" style="width: 150px;">
+                  <input type="text" name="table_search" class="form-control pull-right" placeholder="Search">
 
+                  <div class="input-group-btn">
+                    <button type="submit" class="btn btn-default"><i class="fa fa-search"></i></button>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <!-- /.box-header -->
+            <div class="box-body table-responsive no-padding">
+     <div class="header">
+ <div class="left">
+    
+    </div>
+    
+</div>
+<div class="content">
+
+<?php
+
+$servername = "localhost";
+$username = "root";
+$password = "";
+$dbname = "seguimiento_academico";
+
+// Create connection
+$conn = new mysqli($servername, $username, $password, $dbname);
+// Check connection
+if ($conn->connect_error) {
+    die("Connection failed: " . $conn->connect_error);
+} 
+
+if ( ! empty($_POST)){
+	$periodo=$_REQUEST['Periodo'];
+	list($p, $a) = explode(":", $periodo);
+	$sql = "SELECT * FROM curso where periodo=(SELECT id FROM periodo where ciclo='$p' and year=$a)";
+}
+else $sql = "SELECT * FROM curso";	
+$result = $conn->query($sql);
+$res = $conn->query($sql);
+?>
+
+<form action="programacionAcademica.php" method="post" enctype="multipart/form-data">
+<b>Periodo:</b><br>
+<SELECT NAME="Periodo">
+	<?PHP
+		$sql = "SELECT ciclo, year FROM periodo";
+		$resultP = $conn->query($sql);
+		while($rowP = $resultP->fetch_array()) {
+			$valor = "$rowP[0]:$rowP[1]";
+   			echo "<OPTION VALUE='$valor' >"; echo $rowP[0], $rowP[1];
+		}
+   ?>
+</SELECT>
+<input type="submit" name="enviar" value="Enviar">
+<br><br>
+
+<table class="table table-hover">
+<tr>
+	<?PHP	
+			if ( ! empty($_POST)){
+				$per=$_REQUEST['Periodo'];
+				list($p, $a) = explode(":", $per);
+				echo "$p $a";
+			}
+			else echo "Seleccione un periodo";
+			/*$row4 = $res->fetch_array();
+			$sql = "SELECT ciclo, year FROM periodo where id=$row4[4]";
+			$result2 = $conn->query($sql);
+			$row2 = $result2->fetch_array();
+			echo "** ";
+			echo $row2['ciclo'];
+			echo " ";
+			echo $row2['year'];*/
+	?>
+</tr>
+<tr>
+	<td>Materia</td>
+	<td>Clave</td>
+	<td>Sección</td>
+	<td>NRC</td>
+	<td>Salón</td>
+	<td>Horario</td>
+	<td>Profesor</td>
+</tr>
+<?php
+	if ( ! empty($_POST)){
+    while($row = $result->fetch_array()) {
+		echo "<tr>";
+			echo "<td>";
+				$sql = "SELECT codigo, nombre FROM materia where id=$row[1]";
+				$result2 = $conn->query($sql);
+				$row2 = $result2->fetch_array();
+				echo $row2['nombre'];
+			echo "</td>";
+			echo "<td>";
+				echo $row2['codigo'];
+			echo "</td>";
+			echo "<td>";
+				$sql = "SELECT secc FROM seccion where id=$row[2]";
+				$result2 = $conn->query($sql);
+				$row2 = $result2->fetch_array();
+				echo $row2['secc'];
+			echo "</td>";
+			echo "<td>";
+				echo $row['nrc'];
+			echo "</td>";
+			echo "<td>";
+				$sql = "SELECT salon, dias, hora FROM horarios where nrc_curso=$row[0]";
+				$result2 = $conn->query($sql);
+				$row2 = $result2->fetch_array();
+				echo $row2['salon'];
+			echo "</td>";
+			echo "<td>";
+				$sql = "SELECT dias, hora FROM horarios where nrc_curso=$row[0]";
+				$result2 = $conn->query($sql);
+				$row3 = $result2->fetch_array();
+				while($row3 = $result2->fetch_array()){
+					echo $row3['dias'];
+					echo " - ";
+					echo $row3['hora'];
+					echo "\n";
+				}
+			echo "</td>";
+			echo "<td>";
+				$sql = "SELECT nombre, paterno, materno FROM profesor where id=$row[3]";
+				$result2 = $conn->query($sql);
+				$row2 = $result2->fetch_array();
+				echo $row2['nombre'];
+				echo " ";
+				echo $row2['paterno'];
+				echo " ";
+				echo $row2['materno'];
+			echo "</td>";
+		echo "</tr>";
+	}
+	}
+?>
+</table>
+
+
+
+</div>
+            </div>
+            <!-- /.box-body -->
+           
+          </div>
+          <!-- /.box -->
+          
+         
     </section>
     <!-- /.content -->
   </div>
@@ -701,6 +852,5 @@ $userRow=$stmt->fetch(PDO::FETCH_ASSOC);
 <script src="../dist/js/app.min.js"></script>
 <!-- AdminLTE for demo purposes -->
 <script src="../dist/js/demo.js"></script>
-<script src="../scripts/estadisticas_prof.js"></script>
 </body>
 </html>
