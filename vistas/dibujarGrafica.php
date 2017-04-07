@@ -1,4 +1,5 @@
 <?php
+include "../libchart/classes/libchart.php";
 include_once '../php/conexion.php';
 if(!$coordinador->is_loggedin())
 {
@@ -8,13 +9,115 @@ $user_id = $_SESSION['user_session'];
 $stmt = $DB_con->prepare("SELECT * FROM profesor WHERE id=:user_id");
 $stmt->execute(array(":user_id"=>$user_id));
 $userRow=$stmt->fetch(PDO::FETCH_ASSOC);
-?>
+    $buscar=$_POST['busq'];
+
+    switch($buscar)
+    {
+        case 1: 
+	           $link=mysqli_connect("localhost","root","");
+                mysqli_select_db($link,"seguimiento_academico");
+    
+                $resultado=mysqli_query($link,"SELECT nombre, calificacion FROM materia,curso,inscripcion WHERE nombre = 'Metodologia de la programacion' AND id_materia = id AND id_curso = nrc ");
+                break;
+        
+        case 2: 
+	           $link=mysqli_connect("localhost","root","");
+                mysqli_select_db($link,"seguimiento_academico");
+
+                $resultado=mysqli_query($link,"SELECT nombre, calificacion FROM materia,curso,inscripcion WHERE nombre = 'Programacion I' AND id_materia = id AND id_curso = nrc ");
+                break;
+        
+        case 3: 
+	           $link=mysqli_connect("localhost","root","");
+                mysqli_select_db($link,"seguimiento_academico");
+
+                $resultado=mysqli_query($link,"SELECT nombre, calificacion FROM materia,curso,inscripcion WHERE nombre = 'Programacion II' AND id_materia = id AND id_curso = nrc ");
+                break;
+            
+        case 4: 
+	           $link=mysqli_connect("localhost","root","");
+                mysqli_select_db($link,"seguimiento_academico");
+    
+                $resultado=mysqli_query($link,"SELECT nombre, calificacion FROM materia,curso,inscripcion WHERE nombre = 'Estructura de datos' AND id_materia = id AND id_curso = nrc ");
+                break;
+    
+        case 5: 
+	           $link=mysqli_connect("localhost","root","");
+                mysqli_select_db($link,"seguimiento_academico");
+            
+                $resultado=mysqli_query($link,"SELECT nombre,calificacion FROM materia,curso,inscripcion WHERE nombre = 'Programacion Distribuida' AND id_materia = id AND id_curso = nrc ");
+                break;
+            
+        case 6: 
+	           $link=mysqli_connect("localhost","root","");
+                mysqli_select_db($link,"seguimiento_academico");
+            
+                $resultado=mysqli_query($link,"SELECT nombre,calificacion FROM materia,curso,inscripcion WHERE nombre = 'Aplicaciones web' AND id_materia = id AND id_curso = nrc ");
+                break;
+        
+        case 7: 
+	           $link=mysqli_connect("localhost","root","");
+                mysqli_select_db($link,"seguimiento_academico");
+            
+                $resultado=mysqli_query($link,"SELECT nombre,calificacion FROM materia,curso,inscripcion WHERE nombre = 'Programacion paralela y concurrente' AND id_materia = id AND id_curso = nrc ");
+                break;
+               
+    }
+
+    $chart = new VerticalBarChart();
+	$dataSet = new XYDataSet();
+
+    $contador = array('0', '0', '0', '0', '0', '0');
+
+    
+    while($row=mysqli_fetch_array($resultado))
+    {
+        if($row['calificacion'] == 10)
+        {
+            $contador[0] = $contador[0]+1;
+        }
+        if($row['calificacion'] == 9)
+        {
+            $contador[1] = $contador[1]+1;
+        }
+        if($row['calificacion'] == 8)
+        {
+            $contador[2] = $contador[2]+1;
+        }
+        if($row['calificacion'] = 7)
+        {
+            $contador[3] = $contador[3]+1;
+        }
+        if($row['calificacion'] == 6)
+        {
+            $contador[4] = $contador[4]+1;
+        }
+        if($row['calificacion'] == 5)
+        {
+            $contador[5] = $contador[5]+1;
+        }
+    }
+    mysqli_close($link);
+        
+    $dataSet->addPoint(new Point("10",$contador[0]));
+    $dataSet->addPoint(new Point("9",$contador[1]));
+    $dataSet->addPoint(new Point("8",$contador[2]));
+    $dataSet->addPoint(new Point("7",$contador[3]));
+    $dataSet->addPoint(new Point("6",$contador[4]));
+    $dataSet->addPoint(new Point("5",$contador[5]));
+
+    $chart->setDataSet($dataSet);
+    $chart->getPlot()->setGraphPadding(new Padding(5,30,40,30));
+    $chart->setTitle("Grafica de aprovechamiento");
+    $chart->render("../generated/demo.png");
+    ?>
+
 <!DOCTYPE html>
 <html>
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title>SSAP | Programación Académica</title>
+  <title>SSAP | Aprovechamiento de alumnos</title>
   <!-- Tell the browser to be responsive to screen width -->
   <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
   <!-- Bootstrap 3.3.6 -->
@@ -446,7 +549,7 @@ $userRow=$stmt->fetch(PDO::FETCH_ASSOC);
     <!-- Content Header (Page header) -->
     <section class="content-header">
       <h1>
-        Ver programación académica
+        Ver el aprovechamiento de los alumnos.
        <!-- <small>it all starts here</small>-->
       </h1>
 
@@ -483,7 +586,7 @@ $userRow=$stmt->fetch(PDO::FETCH_ASSOC);
         <div class="col-xs-12">
           <div class="box">
             <div class="box-header">
-              <h3 class="box-title">Programación académica</h3>
+              <h3 class="box-title"></h3>
               <br>
               
               <div class="box-tools">
@@ -498,139 +601,11 @@ $userRow=$stmt->fetch(PDO::FETCH_ASSOC);
             </div>
             <!-- /.box-header -->
             <div class="box-body table-responsive no-padding">
-     <div class="header">
- <div class="left">
-    
-    </div>
-    
-</div>
-<div class="content">
+          <h3><center> <i>Gráfica de Aprovechamiento</i> </center></h3>
+        <br> <br> <br>
+            <center> <img alt="Vertical bars chart" src="../generated/demo.png" style="border: 1px solid gray;"/> </center>
+   
 
-<?php
-
-$servername = "localhost";
-$username = "root";
-$password = "";
-$dbname = "seguimiento_academico";
-
-// Create connection
-$conn = new mysqli($servername, $username, $password, $dbname);
-// Check connection
-if ($conn->connect_error) {
-    die("Connection failed: " . $conn->connect_error);
-} 
-
-if ( ! empty($_POST)){
-	$periodo=$_REQUEST['Periodo'];
-	list($p, $a) = explode(":", $periodo);
-	$sql = "SELECT * FROM curso where periodo=(SELECT id FROM periodo where ciclo='$p' and year=$a)";
-}
-else $sql = "SELECT * FROM curso";	
-$result = $conn->query($sql);
-$res = $conn->query($sql);
-?>
-
-<form action="programacionAcademica.php" method="post" enctype="multipart/form-data">
-<b>Periodo:</b><br>
-<SELECT NAME="Periodo">
-	<?PHP
-		$sql = "SELECT ciclo, year FROM periodo";
-		$resultP = $conn->query($sql);
-		while($rowP = $resultP->fetch_array()) {
-			$valor = "$rowP[0]:$rowP[1]";
-   			echo "<OPTION VALUE='$valor' >"; echo $rowP[0], $rowP[1];
-		}
-   ?>
-</SELECT>
-<input type="submit" name="enviar" value="Enviar">
-<br><br>
-
-<table class="table table-hover">
-<tr>
-	<?PHP	
-			if ( ! empty($_POST)){
-				$per=$_REQUEST['Periodo'];
-				list($p, $a) = explode(":", $per);
-				echo "$p $a";
-			}
-			else echo "Seleccione un periodo";
-			/*$row4 = $res->fetch_array();
-			$sql = "SELECT ciclo, year FROM periodo where id=$row4[4]";
-			$result2 = $conn->query($sql);
-			$row2 = $result2->fetch_array();
-			echo "** ";
-			echo $row2['ciclo'];
-			echo " ";
-			echo $row2['year'];*/
-	?>
-</tr>
-<tr>
-	<td>Materia</td>
-	<td>Clave</td>
-	<td>Sección</td>
-	<td>NRC</td>
-	<td>Salón</td>
-	<td>Horario</td>
-	<td>Profesor</td>
-</tr>
-<?php
-	if ( ! empty($_POST)){
-    while($row = $result->fetch_array()) {
-		echo "<tr>";
-			echo "<td>";
-				$sql = "SELECT codigo, nombre FROM materia where id=$row[1]";
-				$result2 = $conn->query($sql);
-				$row2 = $result2->fetch_array();
-				echo $row2['nombre'];
-			echo "</td>";
-			echo "<td>";
-				echo $row2['codigo'];
-			echo "</td>";
-			echo "<td>";
-				$sql = "SELECT secc FROM seccion where id=$row[2]";
-				$result2 = $conn->query($sql);
-				$row2 = $result2->fetch_array();
-				echo $row2['secc'];
-			echo "</td>";
-			echo "<td>";
-				echo $row['nrc'];
-			echo "</td>";
-			echo "<td>";
-				$sql = "SELECT salon, dias, hora FROM horarios where nrc_curso=$row[0]";
-				$result2 = $conn->query($sql);
-				$row2 = $result2->fetch_array();
-				echo $row2['salon'];
-			echo "</td>";
-			echo "<td>";
-				$sql = "SELECT dias, hora FROM horarios where nrc_curso=$row[0]";
-				$result2 = $conn->query($sql);
-				$row3 = $result2->fetch_array();
-				while($row3 = $result2->fetch_array()){
-					echo $row3['dias'];
-					echo " - ";
-					echo $row3['hora'];
-					echo "\n";
-				}
-			echo "</td>";
-			echo "<td>";
-				$sql = "SELECT nombre, paterno, materno FROM profesor where id=$row[3]";
-				$result2 = $conn->query($sql);
-				$row2 = $result2->fetch_array();
-				echo $row2['nombre'];
-				echo " ";
-				echo $row2['paterno'];
-				echo " ";
-				echo $row2['materno'];
-			echo "</td>";
-		echo "</tr>";
-	}
-	}
-?>
-</table>
-
-
-
-</div>
             </div>
             <!-- /.box-body -->
            

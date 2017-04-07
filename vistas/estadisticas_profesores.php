@@ -290,7 +290,14 @@ $userRow=$stmt->fetch(PDO::FETCH_ASSOC);
             </span>
           </a>
         </li>
-        
+                <li>
+          <a href="graficaAprovechamiento.php">
+            <i class="fa fa-bar-chart"></i> <span>Aprovechamiento alumnos</span>
+            <span class="pull-right-container">
+              <!--<small class="label pull-right bg-green">Hot</small> -->
+            </span>
+          </a>
+        </li>
         <!--
         <li class="treeview">
           <a href="#">
