@@ -28,7 +28,12 @@ $userRow=$stmt->fetch(PDO::FETCH_ASSOC);
   <!-- AdminLTE Skins. Choose a skin from the css/skins
        folder instead of downloading all of them to reduce the load. -->
   <link rel="stylesheet" href="../dist/css/skins/_all-skins.min.css">
-
+  <style>
+		.infox {
+    		background-color: #e7f3fe;
+    		border-left: 6px solid #2196F3;
+		}
+	</style>
   <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
   <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
   <!--[if lt IE 9]>
@@ -298,6 +303,7 @@ $userRow=$stmt->fetch(PDO::FETCH_ASSOC);
             </span>
           </a>
         </li>
+ 
         <!--
         <li class="treeview">
           <a href="#">
@@ -464,7 +470,7 @@ $userRow=$stmt->fetch(PDO::FETCH_ASSOC);
       <!-- Default box -->
       <div class="box">
         <div class="box-header with-border">
-          <h3 class="box-title">Bienvenido</h3>
+          <h3 class="box-title">Anuncios</h3>
 
           <div class="box-tools pull-right">
             <button type="button" class="btn btn-box-tool" data-widget="collapse" data-toggle="tooltip" title="Collapse">
@@ -474,7 +480,17 @@ $userRow=$stmt->fetch(PDO::FETCH_ASSOC);
           </div>
         </div>
         <div class="box-body">
-          Aquí podrá realizar las funciones del coordinador...
+        
+        
+          <div ng-app="anuncios_profe" ng-controller="principal">
+		<div class="infox" ng-repeat="a in anuncios">
+			<strong>{{a.fecha_final}}</strong><br>
+			<p>{{a.descripcion}}</p>
+		</div>
+		<textarea type="text" placeholder="Nuevo anuncio" ng-model="anuncio.descripcion" rows="5" cols="50"></textarea><br>
+		<input type="date" ng-model="anuncio.fecha_final" id="fechita" required>
+		<button type="button" ng-click="subir()">Subir</button>
+	</div>
         </div>
         <!-- /.box-body -->
         <div class="box-footer">
@@ -706,5 +722,7 @@ $userRow=$stmt->fetch(PDO::FETCH_ASSOC);
 <script src="../dist/js/app.min.js"></script>
 <!-- AdminLTE for demo purposes -->
 <script src="../dist/js/demo.js"></script>
+<script src="../js/angular.min.js"></script>
+	<script src="../scripts/anuncios_coor.js"></script>
 </body>
 </html>

@@ -287,6 +287,14 @@ $userRow=$stmt->fetch(PDO::FETCH_ASSOC);
             </span>
           </a>
         </li>
+        <li>
+          <a href="estadisticas_cursos.php">
+            <i class="fa fa-bar-chart"></i> <span>Estadisticas cursos</span>
+            <span class="pull-right-container">
+              <!--<small class="label pull-right bg-green">Hot</small> -->
+            </span>
+          </a>
+        </li>
         
         <!--
         <li class="treeview">
