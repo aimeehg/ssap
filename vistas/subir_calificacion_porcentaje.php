@@ -15,6 +15,7 @@ $stmt1 = $DB_con->prepare("SELECT * FROM inscripcion WHERE id_curso=:nrc order b
 $stmt1->execute(array("nrc"=>$nrc));
 
 
+
 $stmt4 = $DB_con->prepare("SELECT * FROM criterios_evaluacion WHERE nrc_curso=:nrc");
 $stmt4->execute(array("nrc"=>$nrc));
 ?>
@@ -553,8 +554,8 @@ while ($userRow3=$stmt3->fetch(PDO::FETCH_ASSOC)) {
 	$cont=$stmt3->rowCount();
 	
 echo "<td>";
-echo "<input type='text' value=".$userRow3['calif']." name=".$userRow3['id'].">";
-echo "</td>";
+echo "<input type='text' size=2 value=".$userRow3['calif']." name=".$userRow3['id'].">";
+echo "</td>";   
 }}
 
 ?>

@@ -3,7 +3,7 @@
 	require_once 'conexion.php';
 
 	if($_POST)
-	{
+	{	$id = $_POST['id'];
 		$nrc = $_POST['nrc'];
 		//echo $nrc;
 		$materia = $_POST['materia'];
@@ -30,7 +30,7 @@
 		//echo $fecha2;
 
 		//$newpassword = md5($password);
-		$profesor->registrar_curso($nrc,$materia,$seccion,$dias,$hora,$periodo,$fecha,$fecha2,$dia1,$dia2,$dia3);
+		$profesor->registrar_curso($id,$nrc,$materia,$seccion,$dias,$hora,$periodo,$fecha,$fecha2,$dia1,$dia2,$dia3);
 	    //if($propietario->register($email,$newpassword,$nombre,$apellidop,$apellidom,$direccion,$cp)){
         //   echo "bien";
         //}else

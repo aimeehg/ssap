@@ -498,7 +498,12 @@ $result = $conn->query($sql);
         <div class = "row">
             <div class="col-xs-4">
             <form role="form" id="demo-form"  method="POST">
-              
+              ID del Profesor:
+              <div >
+              <input class="form-control" type="number" name="id" value="<?php echo $user_id; ?>" readonly> 
+               
+              </div>
+              <br>
               <div >
               <input class="form-control" type="number" name="nrc" placeholder="NRC de la materia" data-parsley-validar-tam="5">
               </div>

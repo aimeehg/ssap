@@ -47,6 +47,13 @@
                  
     
 								}
+                								else if(data=="empalmado")
+								{
+                                    console.log("aleeeert");
+                                    alert("Error: horario empalmado");
+                 
+    
+								}
                                 else{
                                   alert("Hay un error.");
                                     console.log(data);

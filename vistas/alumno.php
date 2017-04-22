@@ -494,79 +494,51 @@ $result = $conn->query($sql);
             </div>
             <!-- /.box-header -->
             <div class="box-body table-responsive no-padding">
-              <table class="table table-hover">
-                <tr>
-                  <th>NRC</th>
-                  <th>Código</th>
-                  <th>Nombre</th>
-                  <th>Sección</th>
-                  <th>Periodo</th>
-                  <th>Editar</th>
-                  <th>Eliminar</th>
-                  <th># de Alumnos</th>
-                  <th>Acciones sobre alumnos</th>
-                  <th>Criterios de evaluación</th>
-                  <th></th>
-                  <th>Anuncios</th>
-                </tr>
-               <tr>
-<?php
-    while($row = $result->fetch_array()) {
-?>
-	<td> <a href="salon.php?a=<?php echo $row[0] ?>"> <?php echo $row[0] ?></a> 
-	<td><?php  
-	$sql1 = "SELECT * FROM materia WHERE id= $row[1]";
-$result1 = $conn->query($sql1);
-$row1 = $result1->fetch_array();
-	echo $row1[1]; 
-	$id=$row1[1];?> 
-</td>
-	<td> <?php  
-	$sql1 = "SELECT * FROM materia WHERE id= $row[1]";
-$result1 = $conn->query($sql1);
-$row1 = $result1->fetch_array();
-	echo $row1[2]; ?> 
-	</td>
+<h1>Historial academico del alumno</h1>
+<table class="table table-hover">
+  <tr>
+    <th>Nrc</th>
+    <th>Nombre</th>
+    <th>Periodo</th>
+    <th>Calificacion</th>
+  </tr>
+  <?php
+$cuenta=0;
+$prom=0;
+$mat=$_GET['m'];
+$stmt1 = $DB_con->prepare(" SELECT * FROM curso inner join inscripcion INNER JOIN profesor INNER join materia inner join periodo WHERE id_alumno=:user_id and inscripcion.id_curso=curso.nrc and curso.id_profesor=profesor.id and materia.id=curso.id_materia and curso.periodo=periodo.id");
+$stmt1->execute(array(":user_id"=>$mat));
+while($his=$stmt1->fetch(PDO::FETCH_ASSOC)){
+  ?>
+  <tr>
+  
+<td><?php echo $his['nrc'] ?></a>
+  <td><?php
+echo $his['nombre'];
+  ?>
+  </td>
+  <td><?php
+echo $his['ciclo']." ".$his['year'];
+  ?>
+  </td>
 
-	<td>
-		 <?php  
-	$sql2 = "SELECT * FROM seccion WHERE id= $row[2]";
-$result2 = $conn->query($sql2);
-$row2 = $result2->fetch_array();
-	echo $row2[1]; ?>  
-	</td>
-	<td>
-				 <?php  
-	$sql3 = "SELECT * FROM periodo WHERE id= $row[4]";
-$result3 = $conn->query($sql3);
-$row3 = $result3->fetch_array();
-	echo $row3[1].$row3[2]; ?>
-	</td>
+  <td><?php
+echo $his['calificacion'];
+$prom=$his['calificacion'];
+$cuenta+=1;
+  ?>
+  </td>
 
-	<td><a href="editar_curso.php?a=<?php echo $row[0] ?>" class="glyphicon glyphicon-edit"></a></td>
-    <td><a href="../php/eliminar_curso.php?a=<?php echo $row[0] ?>" class="glyphicon glyphicon-remove"></a></td>
-    <td><?php  
-	$sql1 = "SELECT COUNT(*) FROM inscripcion where id_curso=$row[0]";
-$result1 = $conn->query($sql1);
-$row1 = $result1->fetch_array();
-	echo $row1[0]; 
-?> </td>
-<td>
-	<a href="insertar_alumnos.php?a=<?php echo $row[0] ?>">Insertar alumnos</a>
-	<br>
-	<a href="editar_alumnos.php?a=<?php echo $row[0] ?>">Editar alumnos</a>
-	<br>
-	<a href="eliminar_alumnos.php?a=<?php echo $row[0] ?>">Eliminar alumnos</a>
-</td>
-<td><a href="criterios.php?a=<?php echo $row[0] ?>">Criterios</a></td>
-<td><a href="calificacion_final.php?a=<?php echo $row[0] ?>">Calificacion final</a></td>
-<td><a href="mis_anuncios.php?id_curso=<?php echo $row[0] ?>">Ver anuncios</a></td>
-</tr>
-
+  </tr>
 <?php
 }
 ?>
-              </table>
+</table>
+<h3>
+<?php
+echo "El promedio del estudiante es: ".$prom/$cuenta;
+?>
+</h3>
             </div>
             <!-- /.box-body -->
            
