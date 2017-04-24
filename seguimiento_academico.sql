@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 24-03-2017 a las 03:21:58
+-- Tiempo de generación: 24-04-2017 a las 04:06:43
 -- Versión del servidor: 5.7.14
 -- Versión de PHP: 5.6.25
 
@@ -43,10 +43,14 @@ CREATE TABLE `alumno` (
 
 INSERT INTO `alumno` (`matricula`, `nombre`, `paterno`, `materno`, `email`, `password`, `celular`, `prog_edu`) VALUES
 ('201210338', 'Pedro', 'Flores', 'Ramirez', 'pepito_nx@hotmail.com', 'A123456', '2224736851', 'Ingenieria'),
+('201212345', 'Lizzet ', 'Salas', 'Melendez', 'lizz@gmail.com', 'Aqwertyu', '2222709080', 'Ingenieria'),
 ('201220987', 'Jose Luis', 'Barrera', 'Villa', 'jose_luis@hotmail.com', 'A123456', '2224567890', 'Ingenieria'),
 ('201221663', 'Enrique', 'Espinoza', 'Monrroy', 'enrique_face1994@hotmail.com', 'A123456', '2222398090', 'Ingenieria'),
 ('201223837', 'Aimee Cecilia', 'Hernandez', 'Garcia', 'zvok59@gmail.com', 'Aaaaaaa', '9511215075', 'Ingenieria'),
-('201224772', 'Monserrat', 'Rojas', 'Lopez', 'monse15prl@gmail.com', 'A123456', '2228241234', 'Ingenieria');
+('201224772', 'Monserrat', 'Rojas', 'Lopez', 'monse15prl@gmail.com', 'A123456', '2228241234', 'Ingenieria'),
+('201233233', 'Abdiel', 'Tlapale', 'Perez', 'abdiel.tp@gmail.com', 'A098765', '2461045825', 'Ingenieria'),
+('201237270', 'Elia', 'Tecotl', 'Aguilar', 'aileck30@gmail.com', 'Aguilar', '2222345678', 'Ingenieria'),
+('201244403', 'Areli', 'Romero ', 'Jimenez', 'are.jimenez@hotmail.com', 'Asdfghj', '1234567889', 'Ingenieria');
 
 -- --------------------------------------------------------
 
@@ -59,7 +63,7 @@ CREATE TABLE `anuncio` (
   `id_curso` int(11) NOT NULL,
   `descripcion` varchar(256) NOT NULL,
   `destino` int(1) NOT NULL,
-  `fecha_final` varchar(10) NOT NULL
+  `fecha_final` datetime NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
@@ -67,15 +71,12 @@ CREATE TABLE `anuncio` (
 --
 
 INSERT INTO `anuncio` (`id`, `id_curso`, `descripcion`, `destino`, `fecha_final`) VALUES
-(1, 40409, 'hola k ase', 0, '123'),
-(2, 40409, 'sadsad', 0, 'sadasd'),
-(3, 40409, 'asdasdsa', 0, '123'),
-(4, 40409, 'asdasdsa', 0, '123'),
-(5, 40409, 'sadasd', 0, 'asdsad'),
-(6, 40409, 'perro', 0, 'as'),
-(7, 40402, 'holi holi', 0, '22/04/17'),
-(8, 40402, 'twice tus diosas', 0, '13/04/17'),
-(9, 40402, 'chaeyoung bb', 0, '02/04/17');
+(16, 0, 'ReuniÃ³n el miÃ©rcoles 26 de Abril.', 0, '2017-04-23 22:58:26'),
+(17, 0, 'ATENCIÃ“N, la reuniÃ³n del miÃ©rcoles queda cancelada.', 0, '2017-04-23 22:58:55'),
+(18, 40404, 'Hola chicos, darÃ© los resultados de sus exÃ¡menes el dÃ­a de maÃ±ana.', 0, '2017-04-23 23:01:09'),
+(19, 40404, 'Les recuerdo que el viernes 28 es el Ãºltimo dÃ­a para entrega de proyectos.', 0, '2017-04-23 23:02:25'),
+(20, 40409, 'Hola a todos el dÃ­a de maÃ±ana no habrÃ¡ clase.', 0, '2017-04-23 23:02:56'),
+(21, 40402, 'Buenas noches, se les informa que el examen serÃ¡ el martes 25.', 0, '2017-04-23 23:03:26');
 
 -- --------------------------------------------------------
 
@@ -118,12 +119,10 @@ CREATE TABLE `criterios_evaluacion` (
 --
 
 INSERT INTO `criterios_evaluacion` (`id`, `nrc_curso`, `id_profesor`, `descripcion`, `porcentaje`) VALUES
-(2, 40409, 100012622, 'Examen', 40),
-(3, 40409, 100012622, 'Tareas', 20),
-(4, 40409, 100012622, 'Trabajos', 20),
-(5, 40402, 100012622, 'Examen', 30),
-(6, 40402, 100012622, 'Tareas', 20),
-(7, 40402, 100012622, 'Practicas', 50);
+(10, 40402, 100012622, 'Examen', 10),
+(11, 40402, 100012622, 'Proyecto', 90),
+(12, 40404, 100012622, 'Proyecto', 100),
+(13, 40409, 100012622, 'Examen', 100);
 
 -- --------------------------------------------------------
 
@@ -144,8 +143,9 @@ CREATE TABLE `curso` (
 --
 
 INSERT INTO `curso` (`nrc`, `id_materia`, `seccion`, `id_profesor`, `periodo`) VALUES
-(40401, ' 2 ', 3, '100038455', 30),
-(40402, ' 1 ', 2, '100012622', 29);
+(40402, ' 1 ', 92, '100012622', 25),
+(40404, ' 1 ', 93, '100012622', 25),
+(40409, ' 4 ', 94, '100012622', 25);
 
 -- --------------------------------------------------------
 
@@ -166,41 +166,26 @@ CREATE TABLE `evaluacion` (
 --
 
 INSERT INTO `evaluacion` (`id`, `calif`, `nrc_curso`, `id_criterios`, `id_alumno`) VALUES
-(1, 10, 40409, 2, 201210338),
-(2, 7, 40409, 2, 201220987),
-(3, 10, 40409, 2, 201221663),
-(4, 10, 40409, 2, 201223837),
-(5, 9, 40409, 2, 201224772),
-(6, 10, 40409, 3, 201210338),
-(7, 8, 40409, 3, 201220987),
-(8, 10, 40409, 3, 201221663),
-(9, 10, 40409, 3, 201223837),
-(10, 9, 40409, 3, 201224772),
-(11, 10, 40409, 4, 201210338),
-(12, 8, 40409, 4, 201220987),
-(13, 10, 40409, 4, 201221663),
-(14, 10, 40409, 4, 201223837),
-(15, 9, 40409, 4, 201224772),
-(16, 8, 40409, 2, 201210338),
-(17, 8, 40409, 2, 201220987),
-(18, 10, 40409, 2, 201221663),
-(19, 10, 40409, 2, 201223837),
-(20, 8, 40409, 2, 201224772),
-(21, 10, 40409, 3, 201210338),
-(22, 8, 40409, 3, 201220987),
-(23, 10, 40409, 3, 201221663),
-(24, 10, 40409, 3, 201223837),
-(25, 8, 40409, 3, 201224772),
-(26, 0, 40409, 4, 201210338),
-(27, 0, 40409, 4, 201220987),
-(28, 0, 40409, 4, 201221663),
-(29, 0, 40409, 4, 201223837),
-(30, 0, 40409, 4, 201224772),
-(31, 0, 40409, 2, 201210338),
-(32, 0, 40409, 2, 201220987),
-(33, 0, 40409, 2, 201221663),
-(34, 0, 40409, 2, 201223837),
-(35, 0, 40409, 2, 201224772);
+(23, 9, 40402, 10, 201221663),
+(24, 9, 40402, 10, 201221663),
+(25, 9, 40402, 11, 201221663),
+(26, 10, 40402, 10, 201233233),
+(27, 10, 40402, 10, 201233233),
+(28, 10, 40402, 11, 201233233),
+(29, 10, 40404, 12, 201210338),
+(30, 10, 40404, 12, 201212345),
+(31, 10, 40404, 12, 201220987),
+(32, 8, 40404, 12, 201221663),
+(33, 9, 40404, 12, 201223837),
+(34, 10, 40409, 13, 201210338),
+(35, 10, 40409, 13, 201212345),
+(36, 8, 40409, 13, 201220987),
+(37, 6, 40409, 13, 201221663),
+(38, 10, 40409, 13, 201223837),
+(39, 8, 40409, 13, 201224772),
+(40, 10, 40409, 13, 201233233),
+(41, 10, 40409, 13, 201237270),
+(42, 10, 40409, 13, 201244403);
 
 -- --------------------------------------------------------
 
@@ -222,12 +207,15 @@ CREATE TABLE `horarios` (
 --
 
 INSERT INTO `horarios` (`salon`, `dias`, `hora`, `nrc_curso`, `fecha_inicio`, `fecha_final`) VALUES
-('ICCO3-103', 'Miercoles', '7:00', 40401, '2017-03-01', '2017-03-31'),
-('ICCO3-113', 'Martes', '9:00', 40402, '2017-03-01', '2017-03-31'),
-('ICCO4-201', 'Lunes', '7:00', 40401, '2017-03-01', '2017-03-31'),
-('ICCO4-202', 'Jueves', '9:00', 40402, '2017-03-01', '2017-03-31'),
-('ICCO4-204', 'Viernes', '7:00', 40401, '2017-03-01', '2017-03-31'),
-('ICCO4-205', 'Lunes', '10:00', 40402, '2017-03-01', '2017-03-31');
+('ICCO3-109', 'Martes', '11:00', 40409, '2017-01-03', '2017-04-30'),
+('ICCO3-114', 'Martes', '7:00', 40402, '2017-04-01', '2017-04-30'),
+('ICCO3-114', 'Martes', '9:00', 40404, '2017-01-03', '2017-04-30'),
+('ICCO4-204', 'Jueves', '7:00', 40402, '2017-04-01', '2017-04-30'),
+('ICCO4-204', 'Jueves', '9:00', 40404, '2017-01-03', '2017-04-30'),
+('ICCO4-204', 'Lunes', '10:00', 40404, '2017-01-03', '2017-04-30'),
+('ICCO4-204', 'Lunes', '8:00', 40402, '2017-04-01', '2017-04-30'),
+('ICCO4-209', 'Jueves', '11:00', 40409, '2017-01-03', '2017-04-30'),
+('ICCO4-209', 'Lunes', '12:00', 40409, '2017-01-03', '2017-04-30');
 
 -- --------------------------------------------------------
 
@@ -246,7 +234,22 @@ CREATE TABLE `inscripcion` (
 --
 
 INSERT INTO `inscripcion` (`id_curso`, `id_alumno`, `calificacion`) VALUES
-(40402, '201223837', 0);
+(40402, '201221663', 9),
+(40402, '201233233', 10),
+(40404, '201210338', 10),
+(40404, '201212345', 10),
+(40404, '201220987', 10),
+(40404, '201221663', 8),
+(40404, '201223837', 9),
+(40409, '201210338', 10),
+(40409, '201212345', 10),
+(40409, '201220987', 8),
+(40409, '201221663', 6),
+(40409, '201223837', 10),
+(40409, '201224772', 8),
+(40409, '201233233', 10),
+(40409, '201237270', 10),
+(40409, '201244403', 10);
 
 -- --------------------------------------------------------
 
@@ -290,9 +293,7 @@ CREATE TABLE `periodo` (
 --
 
 INSERT INTO `periodo` (`id`, `ciclo`, `year`) VALUES
-(28, ' Primavera ', 2017),
-(29, ' Primavera ', 2017),
-(30, ' Primavera ', 2017);
+(25, ' Primavera ', 2017);
 
 -- --------------------------------------------------------
 
@@ -318,7 +319,7 @@ CREATE TABLE `profesor` (
 --
 
 INSERT INTO `profesor` (`id`, `nombre`, `paterno`, `materno`, `email`, `password`, `num_cub`, `ext_tel`, `tipo`, `password2`) VALUES
-('100012622', 'Graciano', 'Cruz', 'Almanza', 'gca@cs.buap.mx', 'P123456', '114', 2852, 1, ''),
+('100012622', 'Graciano', 'Cruz', 'Almanza', 'gca@cs.buap.mx', 'P123456', '114', 2852, 2, 'C02ABC'),
 ('100038455', 'Jose Andres', 'Vazquez', 'Flores', 'andrex@cs.buap.mx', 'P123456', '103', 7232, 1, NULL),
 ('100100711', 'Marco Antonio', 'Soriano', 'Ulloa', 'soriano@cs.buap.mx', 'P123456', '103', 7214, 1, NULL),
 ('100126233', 'Jose Luis', 'Meza ', 'Leon', 'jlmeza@cs.buap.mx', 'P123456', '103', 7229, 1, NULL),
@@ -349,9 +350,100 @@ CREATE TABLE `seccion` (
 --
 
 INSERT INTO `seccion` (`id`, `secc`) VALUES
-(1, 105),
+(1, 101),
 (2, 101),
-(3, 103);
+(3, 101),
+(4, 101),
+(5, 101),
+(6, 101),
+(7, 101),
+(8, 101),
+(9, 101),
+(10, 101),
+(11, 101),
+(12, 101),
+(13, 101),
+(14, 101),
+(15, 101),
+(16, 101),
+(17, 101),
+(18, 101),
+(19, 101),
+(20, 101),
+(21, 101),
+(22, 101),
+(23, 101),
+(24, 101),
+(25, 101),
+(26, 101),
+(27, 101),
+(28, 101),
+(29, 101),
+(30, 101),
+(31, 101),
+(32, 101),
+(33, 101),
+(34, 101),
+(35, 101),
+(36, 101),
+(37, 101),
+(38, 101),
+(39, 101),
+(40, 101),
+(41, 101),
+(42, 101),
+(43, 101),
+(44, 101),
+(45, 101),
+(46, 101),
+(47, 101),
+(48, 101),
+(49, 101),
+(50, 101),
+(51, 101),
+(52, 101),
+(53, 101),
+(54, 101),
+(55, 101),
+(56, 101),
+(57, 101),
+(58, 101),
+(59, 101),
+(60, 101),
+(61, 101),
+(62, 101),
+(63, 101),
+(64, 101),
+(65, 101),
+(66, 101),
+(67, 101),
+(68, 101),
+(69, 101),
+(70, 101),
+(71, 101),
+(72, 101),
+(73, 101),
+(74, 101),
+(75, 101),
+(76, 101),
+(77, 101),
+(78, 101),
+(79, 101),
+(80, 101),
+(81, 101),
+(82, 101),
+(83, 101),
+(84, 101),
+(85, 101),
+(86, 101),
+(87, 101),
+(88, 101),
+(89, 101),
+(90, 101),
+(91, 101),
+(92, 101),
+(93, 105),
+(94, 101);
 
 --
 -- Índices para tablas volcadas
@@ -443,7 +535,7 @@ ALTER TABLE `seccion`
 -- AUTO_INCREMENT de la tabla `anuncio`
 --
 ALTER TABLE `anuncio`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=22;
 --
 -- AUTO_INCREMENT de la tabla `asesorias`
 --
@@ -453,12 +545,12 @@ ALTER TABLE `asesorias`
 -- AUTO_INCREMENT de la tabla `criterios_evaluacion`
 --
 ALTER TABLE `criterios_evaluacion`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
 --
 -- AUTO_INCREMENT de la tabla `evaluacion`
 --
 ALTER TABLE `evaluacion`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=36;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=43;
 --
 -- AUTO_INCREMENT de la tabla `materia`
 --
@@ -468,7 +560,7 @@ ALTER TABLE `materia`
 -- AUTO_INCREMENT de la tabla `periodo`
 --
 ALTER TABLE `periodo`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=31;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=26;
 --
 -- Restricciones para tablas volcadas
 --
