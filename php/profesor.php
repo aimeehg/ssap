@@ -6,7 +6,32 @@ class profesor{
       $this->db = $DB_con;
     }
 
+                  public function getAnunciosCoor(){
+                try
+  { 
+  
+   $stmt = $this->db->prepare("SELECT descripcion, fecha_final FROM anuncio
+    WHERE id_curso = 0 ORDER by (fecha_final) desc");
+   $stmt->execute(array());
    
+  // $count = $stmt->rowCount();
+       $jsonData = array();
+       while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+
+            $jsonData[] = $row;
+            // echo gettype($row), "\n";
+            
+   
+       }
+       //print_r(json_encode($jsonData, JSON_PRETTY_PRINT));
+       echo json_encode($jsonData);
+    
+  }
+  catch(PDOException $e){
+   echo $e->getMessage();
+  }
+
+    }
                public function getAVG($id,$nrc){
                 try
   { 

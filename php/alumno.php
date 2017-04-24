@@ -5,7 +5,33 @@ class alumno{
     function __construct($DB_con){
       $this->db = $DB_con;
     }
+                      public function getAnuncios($id_alumno){
+                try
+  { 
+  
+   $stmt = $this->db->prepare("SELECT descripcion, fecha_final, anuncio.id_curso from anuncio
+    inner join inscripcion on anuncio.id_curso = inscripcion.id_curso where
+     inscripcion.id_alumno = :id_alumno order by (fecha_final) desc");
+   $stmt->execute(array(":id_alumno"=>$id_alumno));
+   
+  // $count = $stmt->rowCount();
+       $jsonData = array();
+       while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+
+            $jsonData[] = $row;
+            // echo gettype($row), "\n";
+            
+   
+       }
+       //print_r(json_encode($jsonData, JSON_PRETTY_PRINT));
+       echo json_encode($jsonData);
     
+  }
+  catch(PDOException $e){
+   echo $e->getMessage();
+  }
+
+    }
         public function registrar($matricula,$nombre,$paterno,$materno,$email,$password,$celular,$prog_edu){
        try
        {

@@ -10,7 +10,7 @@ myapp.controller("principal", function($http,$scope){
     }
     var curso = tmparr[1]; 
     $scope.anuncio = {
-    	id_curso : curso
+    	id_curso : 0
     };
     $http.get("../php/get_anuncios.php?id_curso=0").then(function(response){
     	$scope.anuncios = response.data.records;

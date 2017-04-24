@@ -470,13 +470,58 @@ $nrc=$_GET['a'];
         <?php
 //$i=1;
 //for($i=5;$i<=10;$i++){
-$stmt = $DB_con->prepare("SELECT count( * ) as cuenta  
+$stmt = $DB_con->prepare("SELECT *  
                             FROM inscripcion  
-                            WHERE calificacion>5 and id_curso=:user_id");
+                            WHERE calificacion=5 and id_curso=:user_id");
 $stmt->execute(array(":user_id"=>$nrc));
 $cali=$stmt->fetch(PDO::FETCH_ASSOC);
 //echo $cali['cuenta']."<br>";
-$contador = $cali['cuenta'];
+$c1 = $stmt->rowCount();
+
+
+$stmt = $DB_con->prepare("SELECT *  
+                            FROM inscripcion  
+                            WHERE calificacion=6 and id_curso=:user_id");
+$stmt->execute(array(":user_id"=>$nrc));
+$cali=$stmt->fetch(PDO::FETCH_ASSOC);
+//echo $cali['cuenta']."<br>";
+$c2 = $stmt->rowCount();
+
+
+$stmt = $DB_con->prepare("SELECT *  
+                            FROM inscripcion  
+                            WHERE calificacion=7 and id_curso=:user_id");
+$stmt->execute(array(":user_id"=>$nrc));
+$cali=$stmt->fetch(PDO::FETCH_ASSOC);
+//echo $cali['cuenta']."<br>";
+$c3 = $stmt->rowCount();
+
+
+$stmt = $DB_con->prepare("SELECT *  
+                            FROM inscripcion  
+                            WHERE calificacion=8 and id_curso=:user_id");
+$stmt->execute(array(":user_id"=>$nrc));
+$cali=$stmt->fetch(PDO::FETCH_ASSOC);
+//echo $cali['cuenta']."<br>";
+$c4 = $stmt->rowCount();
+
+
+$stmt = $DB_con->prepare("SELECT *  
+                            FROM inscripcion  
+                            WHERE calificacion=9 and id_curso=:user_id");
+$stmt->execute(array(":user_id"=>$nrc));
+$cali=$stmt->fetch(PDO::FETCH_ASSOC);
+//echo $cali['cuenta']."<br>";
+$c5 = $stmt->rowCount();
+
+$stmt = $DB_con->prepare("SELECT *  
+                            FROM inscripcion  
+                            WHERE calificacion=10 and id_curso=:user_id");
+$stmt->execute(array(":user_id"=>$nrc));
+$cali=$stmt->fetch(PDO::FETCH_ASSOC);
+//echo $cali['cuenta']."<br>";
+$c6 = $stmt->rowCount();
+
 //}
 ?>
 
@@ -724,21 +769,25 @@ $contador = $cali['cuenta'];
      * -------
      * Here we will create a few charts using ChartJS
      */
-     var contador= '<?php echo $contador; ?>';
- 
-
+     var c1= '<?php echo $c1; ?>';
+          var c2= '<?php echo $c2; ?>';
+               var c3= '<?php echo $c3; ?>';
+                    var c4= '<?php echo $c4; ?>';
+                         var c5= '<?php echo $c5; ?>';
+                              var c6= '<?php echo $c6; ?>';
+                                   
     //-------------
     //- BAR CHART -
     //-------------
      var barChartData = {
-      labels: ["Calificaciones mayores de 5"],
+      labels: ["5","6","7","8","9","10"],
       datasets: [
 
         {
           label: "# Alumnos",
        backgroundColor: 'rgba(54, 162, 235, 0.2)',
             borderColor: 'rgba(54, 162, 235, 1)',
-          data: [contador]
+          data: [c1,c2,c3,c4,c5,c6]
         }
       ]
     };

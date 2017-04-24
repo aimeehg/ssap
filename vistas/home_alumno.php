@@ -35,6 +35,15 @@ $userRow=$stmt->fetch(PDO::FETCH_ASSOC);
   <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
   <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
   <![endif]-->
+     <style>
+		.anuncio {
+    		background-color: #e7f3fe;
+    		border-left: 6px solid #2196F3;
+		}
+    </style>
+    <script>
+     var idalumno = '<?php echo $user_id; ?>'; 
+    </script>
 </head>
 <body class="hold-transition skin-blue sidebar-mini">
 <!-- Site wrapper -->
@@ -465,7 +474,7 @@ $userRow=$stmt->fetch(PDO::FETCH_ASSOC);
       <!-- Default box -->
       <div class="box">
         <div class="box-header with-border">
-          <h3 class="box-title">Bienvenido</h3>
+          <h3 class="box-title">Anuncios</h3>
 
           <div class="box-tools pull-right">
             <button type="button" class="btn btn-box-tool" data-widget="collapse" data-toggle="tooltip" title="Collapse">
@@ -475,7 +484,9 @@ $userRow=$stmt->fetch(PDO::FETCH_ASSOC);
           </div>
         </div>
         <div class="box-body">
-          Aquí podrá realizar las funciones del alumno...
+          <div id="anuncios" class="infox">
+		          	
+	          	</div>
         </div>
         <!-- /.box-body -->
         <div class="box-footer">
@@ -707,5 +718,6 @@ $userRow=$stmt->fetch(PDO::FETCH_ASSOC);
 <script src="../dist/js/app.min.js"></script>
 <!-- AdminLTE for demo purposes -->
 <script src="../dist/js/demo.js"></script>
+<script src="../scripts/getAnunciosAlum.js"></script>
 </body>
 </html>
